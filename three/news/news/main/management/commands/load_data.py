@@ -16,7 +16,11 @@ class Command(BaseCommand):
         for l in block:
             record=News()
             record.title='Title %s' % i
-            record.content=l.findNext('p',{'class':'issue-item-description'}).findNext('p').text
+            findText=l.findNext('div',{'class':'issue-item'}).find_all('p')
+            a=''
+            for m in findText:
+                a+=m.text
+            record.content=a    
             record.urls=l.find('a',{'class':'issue-item-title'}).get('href','http')
             record.save()
             print 'Saving %s' % i
