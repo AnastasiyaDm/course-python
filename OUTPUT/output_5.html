@@ -1,0 +1,510 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="PostgreSQL, пожалуй, это самая продвинутая реляционная база данных в мире Open Source Software. По своим функциональным возможностям она не уступает коммерческой БД Oracle и на голову выше собрата ..." />
+    <meta name="google-site-verification" content="2oW122oyzuORLWrpVhZ29-2w0dTvpjiEL922qCuSa5M" />
+    <title>Работа с PostgreSQL в Python</title>
+    <link rel="stylesheet" href="/static/css/normalize.css">
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/static/css/style.css?28022018">
+    <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css">
+    <link rel='dns-prefetch' href='//cdnjs.cloudflare.com' />
+    <link rel='dns-prefetch' href='//unpkg.com' />
+    <link href="/static/images/icon.png" rel="shortcut icon" type="image/x-icon" />
+
+
+    
+
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/monokai-sublime.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.10.0/highlight.min.js"></script>
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-72123410-1', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function (d, w, c) {
+            (w[c] = w[c] || []).push(function() {
+                try {
+                    w.yaCounter32700075 = new Ya.Metrika({
+                        id:32700075,
+                        clickmap:true,
+                        trackLinks:true,
+                        accurateTrackBounce:true
+                    });
+                } catch(e) { }
+            });
+
+            var n = d.getElementsByTagName("script")[0],
+                s = d.createElement("script"),
+                f = function () { n.parentNode.insertBefore(s, n); };
+            s.type = "text/javascript";
+            s.async = true;
+            s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+            if (w.opera == "[object Opera]") {
+                d.addEventListener("DOMContentLoaded", f, false);
+            } else { f(); }
+        })(document, window, "yandex_metrika_callbacks");
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/32700075" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+
+
+</head>
+
+<body>
+    <div class="blog-masthead">
+        <div class="container container-wrap">
+            <div role="navigation">
+
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#collapse-menu" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+
+            <div class="collapse navbar-collapse" id="collapse-menu" style="padding:0;">
+                <ul class="menu__navigation">
+                    <li><a class="blog-nav-item" href="/ru/">Блог</a></li>
+                    <li><a class="blog-nav-item" href="/ru/archives/">Архивы</a></li>
+                    <li><a class="blog-nav-item" href="/ru/p/contacts/">Контакты</a></li>
+                    <li>
+                        
+                            <a class="blog-nav-item" href="/en/"><img src="/static/images/us-flag.png" alt="In English" title="English version"></a>
+                        
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    
+    <div class="container container-wrap">
+        <div class="row">
+            <div class="col-md-8">
+                <article>
+                    <h1>Работа с PostgreSQL в Python</h1>
+
+                    <div class="article-meta">
+                        <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                        <span>17 Ноя. 2018</span>, <a
+                            href="/ru/category/python/">Python</a>,
+                        <span>959 просмотров</span>
+                        
+                    </div>
+                    <p>PostgreSQL, пожалуй, это самая продвинутая реляционная база данных в мире Open Source Software. По своим функциональным возможностям она не уступает коммерческой БД Oracle и на голову выше собрата MySQL.</p>
+<p>Если вы создаёте на Python веб-приложения, то вам приходиться работать с БД. В Python самой популярной библиотекой для работы с PostgreSQL является <a href="http://initd.org/psycopg/docs/" target="_blank" rel="noopener noreferrer nofollow" data-token-index="1" data-reactroot="">psycopg2</a>. Эта библиотека написана на Си на основе <a href="https://www.postgresql.org/docs/current/libpq.html" target="_blank" rel="noopener noreferrer nofollow" data-token-index="3" data-reactroot="">libpq</a>.</p>
+
+<h2>Установка</h2>
+<p>Тут всё просто, выполняем команду:</p>
+<pre>
+<code class="bash">pip install psycopg2</code></pre>
+<p>Для тех, кто не хочет ставить пакет прямо в системный python, советую использовать <a href="https://khashtamov.com/ru/pyenv-python/" target="_blank">pyenv</a> для отдельного окружения.&nbsp;В Unix системах установка psycopg2 потребует наличия вспомогательных библиотек (libpq, libssl) и компилятора. Чтобы избежать сборки, используйте готовый билд:</p>
+<pre>
+<code class="bash">pip install psycopg2-binary
+</code></pre>
+<p>Но для productino среды разработчики библиотеки рекомендуют собирать библиотеку из исходников.</p><!--more-->
+
+
+<h2>Начало работы</h2>
+<p>Для выполнения запроса к базе, необходимо с ней соединиться и получить курсор:</p>
+<pre>
+<code class="python">import psycopg2
+
+conn = psycopg2.connect(dbname='database', user='db_user', 
+                        password='mypassword', host='localhost')
+cursor = conn.cursor()
+</code></pre>
+<p>Через курсор происходит дальнейшее общение в базой.</p>
+<pre>
+<code class="python">cursor.execute('SELECT * FROM airport LIMIT 10')
+records = cursor.fetchall()
+...
+cursor.close()
+conn.close()
+</code></pre>
+<p>После выполнения запроса, получить результат можно несколькими способами:</p>
+<ul>
+<li><code>cursor.fetchone()</code> &mdash; возвращает 1 строку</li>
+<li><code>cursor.fetchall()</code> &mdash; возвращает список всех строк</li>
+<li><code>cursor.fetchmany(size=5)</code> &mdash; возвращает заданное количество строк</li>
+</ul>
+<p>Также курсор является итерируемым объектом, поэтому можно так:<br></p>
+<pre>
+<code class="python">for row in cursor:
+    print(row)
+</code></pre>
+<p>Хорошей практикой при работе с БД является закрытие курсора и соединения. Чтобы не делать это самому, можно воспользоваться контекстным менеджером:</p>
+<pre>
+<code class="python">with psycopg2.connect(...) as conn:
+    with conn.cursor() as cursor:
+        cursor.execute('SELECT * FROM airport LIMIT 5')
+
+        for row in cursor:
+            print(row)
+</code></pre>
+<p>По умолчанию результат приходит в виде кортежа. Кортеж неудобен тем, что доступ происходит по индексу (изменить это можно, если использовать <code>NamedTupleCursor</code>). Если хотите работать со словарём, то при вызове&nbsp;<code>.cursor</code>&nbsp;передайте аргумент&nbsp;<code>cursor_factory</code>:<br></p>
+<pre>
+<code class="python">from psycopg2.extras import DictCursor
+
+with psycopg2.connect(...) as conn:
+    with conn.cursor(cursor_factory=DictCursor) as cursor:
+        ...
+</code></pre>
+
+
+<h2>Формирование запросов</h2>
+<p>Зачастую в БД выполняются запросы, сформированные динамически. Psycopg2 прекрасно справляется с этой работой, а также берёт на себя ответственность за безопасную обработку строк во избежание атак типа SQL Injection:</p>
+<pre>
+<code class="python">cursor.execute('SELECT * FROM airport WHERE city_code = %s', ('ALA', ))
+for row in cursor:
+    print(row)
+</code></pre>
+<p>Метод <code>execute</code> вторым аргументом принимает коллекцию (кортеж, список и т.д.) или словарь. При формировании запроса необходимо помнить, что:</p>
+<ul>
+<li>Плейсхолдеры в строке запроса должны быть %s<s< code="">, даже если тип передаваемого значения отличается от строки, всю работу берёт на себя psycopg2.</s<></li>
+<li>Не нужно обрамлять строки в одинарные кавычки.</li>
+<li>Если в запросе присутствует знак %, то его необходимо писать как %%.</li>
+</ul>
+<p>Именованные аргументы можно писать так:<br></p>
+<pre>
+<code class="python">&gt;&gt;&gt; cursor.execute('SELECT * FROM engine_airport WHERE city_code = %(city_code)s',
+                   {'city_code': 'ALA'})
+...
+</code></pre>
+
+
+<h2>Модуль psycopg2.sql</h2>
+<p>Начиная с версии 2.7, в psycopg2 появился модуль sql.  Его цель &mdash; упростить и обезопасить работу при формировании динамических запросов. Например, метод <code>execute</code> курсора не позволяет динамически подставить название таблицы.</p>
+<pre>
+<code class="python">&gt;&gt;&gt; cursor.execute('SELECT * FROM %s WHERE city_code = %s', ('airport', 'ALA'))
+
+psycopg2.ProgrammingError: ОШИБКА:  ошибка синтаксиса (примерное положение: "'airport'")
+LINE 1: SELECT * FROM 'airport' WHERE city_code = 'ALA'
+</code></pre>
+<p>Это можно обойти, если сформировать запрос без участия psycopg2, но есть высокая вероятность оставить брешь (привет, SQL Injection!). Чтобы обезопасить строку, воспользуйтесь функцией <code>psycopg2.extensions.quote_ident</code>, но и про неё легко забыть.</p>
+<pre>
+<code class="python">from psycopg2 import sql
+...
+
+&gt;&gt;&gt; with conn.cursor() as cursor:
+        columns = ('country_name_ru', 'airport_name_ru', 'city_code')
+        stmt = sql.SQL('SELECT {} FROM {} LIMIT 5').format(
+            sql.SQL(',').join(map(sql.Identifier, columns)),
+            sql.Identifier('airport')
+        )
+        cursor.execute(stmt)
+
+        for row in cursor:
+            print(row)
+
+('Французская Полинезия', 'Матайва', 'MVT')
+('Индонезия', 'Матак', 'MWK')
+('Сенегал', 'Матам', 'MAX')
+('Новая Зеландия', 'Матамата', 'MTA')
+('Мексика', 'Матаморос', 'MAM')
+
+</code></pre>
+
+
+<h2>Транзакции</h2>
+<p>По умолчанию транзакция создаётся до выполнения первого запроса к БД, и все последующие запросы выполняются в контексте этой транзакции. Завершить транзакцию можно несколькими способами:</p>
+<ul>
+<li>закрыв соединение <code>conn.close()</code></li>
+<li>удалив соединение <code>del conn</code></li>
+<li>вызвав <code>conn.commit()</code> или <code>conn.rollback()</code></li></ul>
+<p>Закрытие соединения через <code>del</code> или метод <code>.close</code> неявно приводит к rollback.</p>
+<p>Старайтесь избегать длительных транзакций, ни к чему хорошему они не приводят. Для ситуаций, когда атомарные операции не нужны, существует свойство <code>autocommit</code> для <code>connection</code> класса. Когда значение равно <code>True</code>, каждый вызов <code>execute</code> будет моментально отражен на стороне БД (например, запись через INSERT).</p>
+<pre>
+<code class="python">with conn.cursor() as cursor:
+    conn.autocommit = True
+
+    values = [
+        ('ALA', 'Almaty', 'Kazakhstan'),
+        ('TSE', 'Astana', 'Kazakhstan'),
+        ('PDX', 'Portland', 'USA'),
+    ]
+
+    insert = sql.SQL('INSERT INTO city (code, name, country_name) VALUES {}').format(
+        sql.SQL(',').join(map(sql.Literal, values))
+    )
+    cursor.execute(insert)
+</code></pre>
+                </article>
+
+                
+                    <div class="row" style="margin-top: 20px;">
+                        <div class="col-md-4">
+                            <img src="/static/images/devbrain.png" alt="Telegram канал"
+                                 title="Telegram канал">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="author-cloud" style="border: 1px #b9baba solid;">
+                                <div class="tchannel-info">
+                                    <p>
+                                        Не так давно я открыл канал в Telegram на тему разработки программного обеспечения, называется он <strong>DevBrain</strong>. На канале я делюсь своими мыслями , а также ресурсами (статьями, видео, презентациями, книжными рекомендациями и т.д.) о кодинге, методологиях разработки и многом другом с чем нам, разработчикам, приходится сталкиваться каждый день в работе.
+                                    </p>
+
+                                    <p>
+                                        На канале уже более 3000 участников, поэтому присоединяйтесь и Вы — <a href="tg://devbrain" target="_blank" rel="nofollow noindex">DevBrain</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                <div id="disqus_thread" style="margin-top:15px;"></div>
+
+                
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2>Интересные записи:</h2>
+                            <ul>
+                                
+                                    <li><a href="/ru/python-rq-howto/">Python-RQ: очередь задач на базе Redis</a></li>
+                                
+                                    <li><a href="/ru/telegram-auth-django/">Авторизация через Telegram в Django и Python</a></li>
+                                
+                                    <li><a href="/ru/how-to-deploy-django-app/">Разворачиваем Django приложение в production на примере Telegram бота</a></li>
+                                
+                                    <li><a href="/ru/django-channels-websocket/">Django Channels: работа с WebSocket и не только</a></li>
+                                
+                                    <li><a href="/ru/why-python/">Почему Python?</a></li>
+                                
+                                    <li><a href="/ru/pyenv-python/">Pyenv: удобный менеджер версий python</a></li>
+                                
+                                    <li><a href="/ru/pandas-introduction/">Введение в pandas: анализ данных на Python</a></li>
+                                
+                                    <li><a href="/ru/python-requests/">Руководство по работе с HTTP в Python. Библиотека requests</a></li>
+                                
+                                    <li><a href="/ru/django-channels-new-features/">Что нового появилось в Django Channels?</a></li>
+                                
+                                    <li><a href="/ru/celery-best-practices/">Celery: начинаем правильно</a></li>
+                                
+                                    <li><a href="/ru/create-telegram-bot-in-python/">Как написать Telegram бота: практическое руководство</a></li>
+                                
+                                    <li><a href="/ru/talkpython-podcast/">Участие в подкасте TalkPython</a></li>
+                                
+                                    <li><a href="/ru/ala-py-first/">Итоги первой встречи Python программистов в Алматы</a></li>
+                                
+                                    <li><a href="/ru/data-pipeline-luigi-python/">Строим Data Pipeline на Python и Luigi</a></li>
+                                
+                            </ul>
+                        </div>
+                    </div>
+                
+            </div>
+            
+
+
+
+<div class="col-md-4">
+
+    <div class="sidebar-widget" style="margin-top:40px;">
+        <h4 class="sidebar-title">Поиск</h4>
+        <form action="/ru/search/" method="get" class="form-inline" onsubmit="yaCounter32700075.reachGoal('searchBtnClick'); return true;">
+            <input style="width: 100%;border-radius:1px;" class="form-control" type="text" name="query"
+                    placeholder="поиск">
+
+            <button class="btn btn-primary btn-block"
+                    style="margin-top:10px;border-radius:1px;">Найти</button>
+        </form>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="sidebar-widget">
+        <h4 class="sidebar-title">Свежие записи</h4>
+        <ul style="padding:0; list-style: none;">
+            
+                <li><a href="/ru/postgresql-python-psycopg2/">Работа с PostgreSQL в Python</a></li>
+            
+                <li><a href="/ru/python-poetry-dependency-management/">Poetry: новый менеджер зависимостей в Python</a></li>
+            
+                <li><a href="/ru/telegram-auth-django/">Авторизация через Telegram в Django и Python</a></li>
+            
+                <li><a href="/ru/amazon-redshift-python/">Amazon Redshift и Python</a></li>
+            
+                <li><a href="/ru/remote-job-aggregator/">Агрегатор вакансий об удалённой работе</a></li>
+            
+                <li><a href="/ru/designing-data-intensive-applications/">Designing Data-Intensive Applications</a></li>
+            
+                <li><a href="/ru/machine-learning-big-data/">Машинное обучение и Big Data</a></li>
+            
+                <li><a href="/ru/data-pipeline-luigi-python/">Строим Data Pipeline на Python и Luigi</a></li>
+            
+                <li><a href="/ru/windows-10-ubuntu-upgrade/">Обновляем подсистему Linux на Windows 10</a></li>
+            
+                <li><a href="/ru/pandas-introduction/">Введение в pandas: анализ данных на Python</a></li>
+            
+        </ul>
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    <div class="sidebar-widget">
+        <h4 class="sidebar-title">Самые популярные</h4>
+        <ul style="padding:0; list-style: none;">
+            
+                <li><a href="/ru/create-telegram-bot-in-python/">Как написать Telegram бота: практическое руководство</a></li>
+            
+                <li><a href="/ru/pandas-introduction/">Введение в pandas: анализ данных на Python</a></li>
+            
+                <li><a href="/ru/python-requests/">Руководство по работе с HTTP в Python. Библиотека requests</a></li>
+            
+                <li><a href="/ru/celery-best-practices/">Celery: начинаем правильно</a></li>
+            
+                <li><a href="/ru/free-ssl-certificates-lets-encrypt/">Бесплатные SSL сертификаты от Let&#39;s Encrypt</a></li>
+            
+                <li><a href="/ru/why-python/">Почему Python?</a></li>
+            
+                <li><a href="/ru/kvm-setup-server/">Используем KVM для создания виртуальных машин на сервере</a></li>
+            
+                <li><a href="/ru/vagrant-how-to-setup/">Vagrant: что за зверь и как с ним работать?</a></li>
+            
+                <li><a href="/ru/how-to-deploy-django-app/">Разворачиваем Django приложение в production на примере Telegram бота</a></li>
+            
+                <li><a href="/ru/django-channels-websocket/">Django Channels: работа с WebSocket и не только</a></li>
+            
+        </ul>
+    </div>
+
+</div>
+
+        </div>
+
+    <script>
+    var disqus_config = function () {
+    this.page.url = 'https://khashtamov.com/ru/postgresql-python-psycopg2/';
+    this.page.identifier = '/ru/postgresql-python-psycopg2/-49';
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://khashtamov.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+    </div>
+
+
+
+    <!--footer-->
+    <div class="container container-wrap">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="footer" style="padding-bottom: 20px;padding-top:20px;">
+                    <p><span style="font-size: .8em;color:#9b9b9b;">Работает на Django 2.1.2 & Python 3.6.1  @ <a href="https://goo.gl/Yp6mKz" rel="nofollow noindex" target="_blank">DigitalOcean</a> © 2015 — 2018</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>

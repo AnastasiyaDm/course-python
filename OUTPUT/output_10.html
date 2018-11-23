@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<title>Python GUI Development with Tkinter: Part 3</title>
+	<meta name="description" content="" />
+	<meta name="keywords" content="">
+	<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+	<!-- fav icons -->
+	<!--<link rel="shortcut icon" href="/assets/images/favicon.ico?v=91ac276b65">-->
+	<link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png?v=91ac276b65">
+	<link rel="apple-touch-icon" sizes="72x72" href="/assets/images/apple-touch-icon-72x72.png?v=91ac276b65">
+	<link rel="apple-touch-icon" sizes="114x114" href="/assets/images/apple-touch-icon-114x114.png?v=91ac276b65">
+	<!-- stylesheets -->
+    <link href="//fonts.googleapis.com/css?family=Nunito:400,400i,700,700i" rel="stylesheet">
+	<link rel="stylesheet" href="/assets/css/bootstrap.min.css?v=91ac276b65">
+	<link rel="stylesheet" href="/assets/css/font-awesome.min.css?v=91ac276b65">
+	<link rel="stylesheet" type="text/css" href="/assets/css/screen.css?v=91ac276b65">
+	<link rel="stylesheet" type="text/css" href="/assets/css/hl-styles/atom_one_dark.css?v=91ac276b65">
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+	<script>
+/*====================================================
+  THEME SETTINGS & GLOBAL VARIABLES
+====================================================*/
+//  1. Disqus comment settings
+var disqus_shortname = 'stackabuse'; // required: replace example with your forum shortname
+
+//	2. Sidebar Position
+var sidebar_left = false; // Set true or flase for positioning sidebar on left
+
+//  3. Recent Post count
+var recent_post_count = 3;
+
+//	4. Google+ badge settings
+var badge_type = 'page'; // person / page / community ----- three type of google badge
+var google_plus_url = 'https://plus.google.com/111813546240107028721';
+
+//	5. Facebook Page Setting
+var facebook_page_url = 'https://www.facebook.com/stackabuse';
+
+//	6. Twitter Setting
+var twitter_url = 'https://twitter.com/ScottWRobinson';
+var twitter_widget_id = '722928793669607425';
+var number_of_tweet = 3;
+
+//	7. Mailchimp signup form Setting
+var mailchimp_form_url = '//stackabuse.us10.list-manage.com/subscribe/post?u=90b216fdbe02b25619ec94fc3&amp;id=bc2bb312cd';
+var success_message = "Please check your inbox and confirm your email address. Thank you!";
+
+//	8. Flickr Setting
+//var flickr_id = '52617155@N08';
+var flickr_id = '';
+
+// 9. Adsense Channels
+var adsense_tag_to_channel_name = {
+    'node': 'sa-topic-node-js',
+    'javascript': 'sa-topic-javascript',
+    'python': 'sa-topic-python',
+    'java': 'sa-topic-java',
+    'machine learning': 'sa-topic-machine-learning',
+    'artificial intelligence': 'sa-topic-ai',
+    'tensorflow': 'sa-topic-tensorflow',
+    'scikit-learn': 'sa-topic-scikit-learn',
+    'algorithms': 'sa-topic-algorithms',
+    'data structures': 'sa-topic-data-structures',
+    'aws': 'sa-topic-aws',
+    'apache': 'sa-topic-apache',
+    'django': 'sa-topic-django',
+    'flask': 'sa-topic-flask',
+    'shell': 'sa-topic-shell',
+    'bash': 'sa-topic-bash',
+    'npm': 'sa-topic-npm',
+    'unix': 'sa-topic-unix',
+    'linux': 'sa-topic-linux',
+    'json': 'sa-topic-json',
+    'maven': 'sa-topic-maven',
+    'web framework': 'sa-topic-web-framework',
+    'security': 'sa-topic-security',
+    'arduino': 'sa-topic-arduino',
+    'express': 'sa-topic-express-js',
+    'es6': 'sa-topic-es6',
+    'mongodb': 'sa-topic-mongodb',
+    'how to': 'sa-topic-how-to',
+};
+var adsense_author_to_channel_name = {
+    'Scott Robinson': 'sa-author-scott-robinson',
+    'Frank Hofmann': 'sa-author-frank-hofmann',
+    'Adam McQuistan': 'sa-author-adam-mcquistan',
+    'Tendai Mutunhire': 'sa-author-tendai-mutunhire',
+    'Guest Contributor': 'sa-author-guest-contributor',
+    'Mihajlo Pavloski': 'sa-author-mihajlo-pavloski',
+    'Esther Vaati': 'sa-author-esther-vaati',
+    'Adnan Rahic': 'sa-author-adnan-rahic',
+    'Sam Galizia': 'sa-author-sam-galizia',
+};
+var adsense_channel_name_to_id = {
+    'sa-author-scott-robinson': '5091228512',
+    'sa-author-frank-hofmann': '5574923176',
+    'sa-author-adam-mcquistan': '5470502461',
+    'sa-author-tendai-mutunhire': '4157420794',
+    'sa-author-guest-contributor': '9218175780',
+    'sa-author-mihajlo-pavloski': '2081921796',
+    'sa-author-esther-vaati': '9026604091',
+    'sa-author-adnan-rahic': '5829595117',
+    'sa-author-sam-galizia': '1890350103',
+    'sa-topic-node-js': '9234966588',
+    'sa-topic-javascript': '4871736666',
+    'sa-topic-python': '6017776300',
+    'sa-topic-java': '4704694632',
+    'sa-topic-machine-learning': '2618830613',
+    'sa-topic-ai': '7679585600',
+    'sa-topic-tensorflow': '2325943302',
+    'sa-topic-scikit-learn': '8801095589',
+    'sa-topic-algorithms': '9664898345',
+    'sa-topic-data-structures': '8884856065',
+    'sa-topic-aws': '6294351744',
+    'sa-topic-apache': '4220999970',
+    'sa-topic-django': '2399338763',
+    'sa-topic-flask': '3357197212',
+    'sa-topic-shell': '7386698293',
+    'sa-topic-bash': '6588621943',
+    'sa-topic-npm': '8417952206',
+    'sa-topic-unix': '4912578190',
+    'sa-topic-linux': '4029428281',
+    'sa-topic-json': '7104870536',
+    'sa-topic-maven': '2286414858',
+    'sa-topic-web-framework': '4321551251',
+    'sa-topic-security': '8660251512',
+    'sa-topic-arduino': '2649376939',
+    'sa-topic-express-js': '3008469582',
+    'sa-topic-es6': '3447453289',
+    'sa-topic-mongodb': '9382306243',
+    'sa-topic-how-to': '5443061231',
+    'sa-position-sidebar-top': '9190734552',
+    'sa-position-sidebar-middle': '5600217174',
+    'sa-position-sidebar-bottom': '3770886911',
+    'sa-position-content-top': '4789698384',
+    'sa-position-content-middle': '7686081194',
+    'sa-position-content-bottom': '4576223195',
+};
+</script>    <link rel="canonical" href="https://stackabuse.com/python-gui-development-with-tkinter-part-3/" />
+    <meta name="referrer" content="origin-when-cross-origin" />
+    
+    <meta property="og:site_name" content="Stack Abuse" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Python GUI Development with Tkinter: Part 3" />
+    <meta property="og:description" content="This is the third installment of our multi-part series on developing GUIs in Python using Tkinter. Check out the links below for the other parts to this series: Python GUI Development with Tkinter Python GUI Development with Tkinter: Part 2 Python GUI Development with Tkinter: Part 3 Introduction Tkinter is" />
+    <meta property="og:url" content="https://stackabuse.com/python-gui-development-with-tkinter-part-3/" />
+    <meta property="article:published_time" content="2018-11-12T16:25:18.000Z" />
+    <meta property="article:modified_time" content="2018-11-12T20:06:35.000Z" />
+    <meta property="article:tag" content="python" />
+    <meta property="article:tag" content="tkinter" />
+    
+    <meta property="article:author" content="https://www.facebook.com/doobry" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Python GUI Development with Tkinter: Part 3" />
+    <meta name="twitter:description" content="This is the third installment of our multi-part series on developing GUIs in Python using Tkinter. Check out the links below for the other parts to this series: Python GUI Development with Tkinter Python GUI Development with Tkinter: Part 2 Python GUI Development with Tkinter: Part 3 Introduction Tkinter is" />
+    <meta name="twitter:url" content="https://stackabuse.com/python-gui-development-with-tkinter-part-3/" />
+    <meta name="twitter:label1" content="Written by" />
+    <meta name="twitter:data1" content="Mateusz Dobrychlop" />
+    <meta name="twitter:label2" content="Filed under" />
+    <meta name="twitter:data2" content="python, tkinter" />
+    <meta name="twitter:site" content="@ScottWRobinson" />
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Stack Abuse",
+        "logo": "https://stackabuse.com/ghost/img/ghosticon.jpg"
+    },
+    "author": {
+        "@type": "Person",
+        "name": "Mateusz Dobrychlop",
+        "image": "https://stackabuse.com/content/images/2018/10/stackabuse_mdobry.jpg",
+        "url": "https://stackabuse.com/author/mateusz/",
+        "sameAs": [
+            "https://www.facebook.com/doobry"
+        ],
+        "description": "I use Python to develop bioinformatics tools that help biologists build and visualize structural models of important molecular machines."
+    },
+    "headline": "Python GUI Development with Tkinter: Part 3",
+    "url": "https://stackabuse.com/python-gui-development-with-tkinter-part-3/",
+    "datePublished": "2018-11-12T16:25:18.000Z",
+    "dateModified": "2018-11-12T20:06:35.000Z",
+    "keywords": "python, tkinter",
+    "description": "This is the third installment of our multi-part series on developing GUIs in Python using Tkinter. Check out the links below for the other parts to this series: Python GUI Development with Tkinter Python GUI Development with Tkinter: Part 2 Python GUI Development with Tkinter: Part 3 Introduction Tkinter is"
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.9" />
+    <link rel="alternate" type="application/rss+xml" title="Stack Abuse" href="https://stackabuse.com/rss/" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.js"></script>
+</head>
+<body class="post-template tag-python tag-tkinter">
+    <!-- <style type="text/css" media="screen">
+         div#banner { 
+           color: #ffffff;
+           position: fixed;
+           top: 0;
+           left: 0;
+           background-color: #404040;
+           width: 100%;
+           z-index: 1;
+         }
+         div#banner-content { 
+           width: 100%; 
+           margin: 0 auto; 
+           padding: 5px; 
+         }
+         .btn-primary-outline {
+           color: #ffffff;
+           background-color: transparent;
+           border-color: #ffffff;
+           border-radius: 3px;
+         }
+         .btn-primary-outline:hover {
+           color: #cccccc;
+           background-color: transparent;
+           border-color: #ffffff;
+           border-radius: 3px;
+         }
+    </style>
+    <div id="banner">
+        <div id="banner-content" class="text-center">
+            <span style="margin-right: 10px;">Post your job to 500K+ developers for only $99</span>
+            <a class="btn btn-lg btn-primary-outline" href="#"
+                data-toggle="modal"
+                data-target="#jobModal"
+                ga-on="click"
+                ga-event-category="Jobs"
+                ga-event-action="Click"
+                ga-event-label="Stack-Abuse-Post-Job"
+            >
+                <span class="glyphicon glyphicon-briefcase"></span>
+                &nbsp;
+                Post a Job
+            </a>
+        </div>
+    </div> -->
+
+	<nav class="navbar navbar-default navbar-static-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <i class="fa fa-bars"></i>
+      </button>
+      <a class="navbar-brand" href="/">Stack <span style="color:#f16334;">Abuse</span></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+	<li class="nav-jobs" role="presentation"><a href="https://stackabuse.com/jobs/">Jobs</a></li>
+	<li class="nav-nodejs" role="presentation"><a href="https://stackabuse.com/tag/node/">Node.js</a></li>
+	<li class="nav-python" role="presentation"><a href="https://stackabuse.com/tag/python">Python</a></li>
+	<li class="nav-java" role="presentation"><a href="https://stackabuse.com/tag/java/">Java</a></li>
+	<li class="nav-write-for-us" role="presentation"><a href="https://stackabuse.com/write-for-us/">Write for Us</a></li>
+	<li class="nav-learn-nodejs" role="presentation"><a href="https://stackabuse.com/learn-node-js-a-beginners-guide/">Learn Node.js</a></li>
+</ul>
+      <!--<ul class="nav navbar-nav pull-right">
+        <li role="presentation">
+          <a class="btn btn-success nav-btn" href="http://jobs.stackabuse.com">Find a Job</a>
+        </li>
+        <li role="presentation">
+          <a class="btn btn-danger nav-btn" href="http://jobs.stackabuse.com/post">Post a Job</a>
+        </li>
+      </ul>-->
+    </div><!--/.nav-collapse -->
+  </div>
+</nav>
+    <!-- BuySellAds Ad Code -->
+<script type="text/javascript">
+(function(){
+  var bsa = document.createElement('script');
+     bsa.type = 'text/javascript';
+     bsa.async = true;
+     bsa.src = '//s3.buysellads.com/ac/bsa.js';
+  (document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(bsa);
+})();
+</script>
+<!-- End BuySellAds Ad Code -->
+	<!-- start site's main content area -->
+<section class="content-wrap">
+	<div class="container">
+		<div class="row">
+			<!-- start main post area -->
+			<div class="col-md-8 main-content">
+				<!-- start post -->
+				<article id="295" class="post tag-python tag-tkinter">
+					<div class="post-head">
+						<h2 class="post-title">Python GUI Development with Tkinter: Part 3</h2>
+						<div class="post-meta">
+							<span class="author">
+                                By
+                                <a rel="nofollow" target="_blank" href="">
+                                    <i class="fa fa-twitter" style="color:#55acee;"></i>
+                                    Mateusz Dobrychlop
+                                </a>
+                            </span> &bull;
+							<span class="date">November 12, 2018</span> &bull;
+							<span class="comment-count"><a href="/python-gui-development-with-tkinter-part-3/#disqus_thread">0 Comments</a></span>
+						</div>
+					</div>
+                    <div class="post-ad">
+                        <!-- BuySellAds Zone Code -->
+<div id="bsap_1307307" class="bsarocks bsap_023d86b911cfb66415b9b7bd3a3267b4"></div>
+<!-- End BuySellAds Zone Code -->                    </div>
+					<div class="post-content">
+						<p>This is the third installment of our multi-part series on developing GUIs in Python using Tkinter. Check out the links below for the other parts to this series:</p>
+
+<ul>
+<li><a target="_blank" href="/python-gui-development-with-tkinter/">Python GUI Development with Tkinter</a></li>
+<li><a target="_blank" href="/python-gui-development-with-tkinter-part-2/">Python GUI Development with Tkinter: Part 2</a></li>
+<li>Python GUI Development with Tkinter: Part 3</li>
+</ul>
+
+<h3 id="introduction">Introduction</h3>
+
+<p><a rel="nofollow" target="_blank" href="https://docs.python.org/3/library/tkinter.html#module-tkinter">Tkinter</a> is the de facto standard package for building GUIs in Python. In StackAbuse's <a target="_blank" href="/python-gui-development-with-tkinter/">first</a> and <a target="_blank" href="/python-gui-development-with-tkinter-part-2/">second</a> part of the Tkinter tutorial, we learned how to use the basic GUI building blocks to create simple interfaces.</p>
+
+<p>In the last part of our tutorial, we'll take a look at a couple of shortcuts that Tkinter offers to let us effortlessly offer complex and very useful features. We'll also learn about Python Mega Widgets - a toolkit, based on Tkinter, that speeds up building complicated interfaces even faster.</p>
+
+<h3 id="filedialog">File Dialog</h3>
+
+<p>Letting a user select a file on their machine is obviously a very common feature of graphical interfaces. The file dialogs are usually pretty complex - they combine at least multiple buttons (like <em>Open</em>, <em>Cancel</em>, or <em>Create New Folder</em>) and a frame that displays the structure of our environment's directories. Based on our previous tutorials, you may assume that using Tkinter it is very difficult to create such a complicated feature. However, actually, it isn't. Take a look at the following example:</p>
+
+<pre><code class="language-python">import tkinter  
+import tkinter.filedialog
+
+root = tkinter.Tk()
+
+def print_path():  
+    f = tkinter.filedialog.askopenfilename(
+        parent=root, initialdir='C:/Tutorial',
+        title='Choose file',
+        filetypes=[('png images', '.png'),
+                   ('gif images', '.gif')]
+        )
+
+    print(f)
+
+b1 = tkinter.Button(root, text='Print path', command=print_path)  
+b1.pack(fill='x')
+
+root.mainloop()  
+</code></pre>
+
+<p><strong>Output:</strong></p>
+
+<p><img class="img-responsive" src="https://s3.amazonaws.com/stackabuse/media/python-gui-development-tkinter-part-3-1.jpg"></p>
+
+<p>The code above is all you need to display a nice, useful <em>File Dialog</em>. In line 2 we import the contents of the <code>filedialog</code> class. Then, after creating our <code>root</code> window in line 4, we define a new function in line 6 (which is supposed to be executed by the button created in line 17 and packed in line 18).</p>
+
+<p>Let's take a look at the <code>print_path()</code> function definition. In line 7, we execute the <code>askopenfilename</code> function, which takes a couple of arguments. The first argument, of course, is the dialog's parent widget (which in this case is our root window). Then, in the <code>initialdir</code> argument, we provide a location that'll be displayed in our file dialog right after it's opened. <code>title</code> controls the content of the dialog's title bar.</p>
+
+<p>And then we have the <code>filetypes</code> argument, thanks to which we can specify what kind of files will be visible for the user in the file dialog. Narrowing down the file types can make the search for the desired file much faster, as well as letting the user know which types of files are accepted.</p>
+
+<p>The argument to <code>filetypes</code> is a list of 2-element tuples. In each tuple, the first element is a string which is any description we want to set for each of the file types. The second element is where we state or list the file extensions associated with each file type (if there's only one extension, it's a string - otherwise, it's a tuple). As you can see on the output screenshot above, the user can select the displayed file type from the dropdown list in the bottom right corner of the dialog.</p>
+
+<p>The <code>askopenfilename()</code> method returns a string which is the path of the file selected by the user. If the user decides to hit <em>Cancel</em>, an empty string is returned. In line 7 we return the path to variable <code>f</code>, and then, in line 15 (which is only executed after the File Dialog is closed), the path is printed in the console.</p>
+
+<h3 id="displayingimagesusingtkinter">Displaying Images Using Tkinter</h3>
+
+<p>One more interesting thing that many people might find useful to apply to their GUIs is displaying images. Let's modify the previous example a little bit.</p>
+
+<pre><code class="language-python">import tkinter  
+import tkinter.filedialog
+
+root = tkinter.Tk()
+
+def display_image():  
+    f = tkinter.filedialog.askopenfilename(
+        parent=root, initialdir='C:/Tutorial',
+        title='Choose file',
+        filetypes=[('png images', '.png'),
+                   ('gif images', '.gif')]
+        )
+
+    new_window = tkinter.Toplevel(root)
+
+    image = tkinter.PhotoImage(file=f)
+    l1 = tkinter.Label(new_window, image=image)
+    l1.image = image
+    l1.pack()
+
+b1 = tkinter.Button(root, text='Display image', command=display_image)  
+b1.pack(fill='x')
+
+root.mainloop()  
+</code></pre>
+
+<p><strong>Output:</strong></p>
+
+<p><img class="img-responsive" src="https://s3.amazonaws.com/stackabuse/media/python-gui-development-tkinter-part-3-2.jpg"></p>
+
+<p>Let's see what changed inside the function executed by our button, now renamed to <code>display_image</code>. We display the File Dialog, we use the same criteria for file selection as before, and again we store the returned path in variable <code>f</code>. However, after getting the file path, we don't print it in the console. What we do is we create a top-level window in line 14. Then, in line 16, we instantiate an object of the <code>PhotoImage</code> class, by making it read the <code>.png</code> file that was selected by the user. The object is then stored in the <code>image</code> variable, which we can pass as an argument for the construction of <code>Label</code> widget in line 17. In line 18, we make sure to keep a reference to the <code>image</code> object in order to <a rel="nofollow" target="_blank" href="http://effbot.org/tkinterbook/photoimage.htm">keep it from getting cleared by Python's garbage collector</a>. Then, in line 19, we pack our label (this time displaying an image, not a text) inside the <code>new_window</code>.</p>
+
+<h3 id="colorchooser">Color Chooser</h3>
+
+<p>Another common feature, especially in software focused on graphics, is allowing the user to select a color from a palette. In this case, Tkinter also offers a nice, ready-to-use solution that should satisfy most of our needs concerning the color choosing feature.</p>
+
+<pre><code class="language-python">import tkinter  
+import tkinter.colorchooser
+
+root = tkinter.Tk()
+
+def color_button():  
+    color = tkinter.colorchooser.askcolor(parent=root)
+    print(color)
+    b1.configure(bg=color[1])
+
+b1 = tkinter.Button(root, text='Select Color', command=color_button)  
+b1.pack(fill='x')
+
+root.mainloop()  
+</code></pre>
+
+<p><strong>Output:</strong></p>
+
+<p><img class="img-responsive" src="https://s3.amazonaws.com/stackabuse/media/python-gui-development-tkinter-part-3-3.jpg"></p>
+
+<p>In line 2 of the example shown above, we import a class called <code>colorchooser</code>. We use its <code>askcolor()</code> method in line 7. This method, similarly to <code>askopenfilename()</code>, is responsible for opening a nice, complex dialog (a color chooser in this case) and returns the data dependent on the user's choice. In this case, after the user picks a color from the palette and accepts their choice, the object returned to variable <code>color</code> is a tuple containing two elements. The first element is a tuple that stores values for the selected color's red, green and blue channels. The second element of the tuple is the same color specified in <strong>hexadecimal</strong> format. We can see the contents of the tuples in our console, thanks to the <code>print()</code> in line 8.</p>
+
+<p>After we store the tuple returned by <code>askcolor</code> in variable <code>color</code>, we then use that variable in line 9 to configure the <code>b1</code> button. As you already know, the <code>bg</code> argument is responsible for controlling the button's background color. We pass the first element of the <code>color</code> tuple to it (the color representation in hexadecimal format). As a result, after pressing the <code>b1</code> button, the user can change its background color using a nice color chooser.</p>
+
+<h3 id="messageboxes">Message Boxes</h3>
+
+<p>Before move on from Tkinter to Python Mega Widgets, it's good to mention one more feature of the Tkinter module that makes programming GUIs a bit quicker. Tkinter offers so-called Message Boxes, which are a set of simple, but widely used <strong>standard dialogs</strong>. These message boxes can be used to display a quick message, a warning, or when we need our user to make a simple yes/no decision. The following example demonstrates all message boxes offered by Tkinter:</p>
+
+<pre><code class="language-python">import tkinter  
+import tkinter.messagebox
+
+root = tkinter.Tk()
+
+def display_and_print():  
+    tkinter.messagebox.showinfo("Info","Just so you know")
+    tkinter.messagebox.showwarning("Warning","Better be careful")
+    tkinter.messagebox.showerror("Error","Something went wrong")
+
+    okcancel = tkinter.messagebox.askokcancel("What do you think?","Should we go ahead?")
+    print(okcancel)
+
+    yesno = tkinter.messagebox.askyesno("What do you think?","Please decide")
+    print(yesno)
+
+    retrycancel = tkinter.messagebox.askretrycancel("What do you think?","Should we try again?")
+    print(retrycancel)
+
+    answer = tkinter.messagebox.askquestion("What do you think?","What's your answer?")
+    print(answer)
+
+b1 = tkinter.Button(root, text='Display dialogs', command=display_and_print)  
+b1.pack(fill='x')
+
+top.mainloop()  
+</code></pre>
+
+<p><strong>Output:</strong></p>
+
+<p><img class="img-responsive" src="https://s3.amazonaws.com/stackabuse/media/python-gui-development-tkinter-part-3-4.jpg"></p>
+
+<p>This time, our <code>b1</code> button executes function <code>display_and_print()</code>. The function lets 7 message boxes pop up in sequence - each is displayed after the user interacts with the previous one. dialogs defined in lines 11 - 21 are dialogs that require the user to choose one of two available options - therefore, they return values based on the decisions and store them in their respective variables. In each case, we can pass two arguments while defining the dialogs - first is always the dialog's title, and the second one contains contents of its main message.</p>
+
+<p>So, to start from the top. In line 7, we define a simple <code>showinfo</code> dialog, which is only meant to display a neutral icon, a message, and an <em>OK</em> button that closes it. In lines 8 and 9, we have similar, simple types of message boxes, but their icons indicate that caution from the user is required (<code>showwarning</code>) or that an error has occurred (<code>showerror</code>). Note that in each of the three cases, a different sound is played upon the dialog's appearance.</p>
+
+<p>As I stated before, lines 11 - 21 contain code responsible for displaying dialogs to get the user's decision. <code>askokcancel</code> (line 11) returns <code>True</code> if the user clicks <em>OK</em> and <code>False</code> if they click <em>Cancel</em>. <code>askyesno</code> (line 14) returns <code>True</code> if the user clicks <em>Yes</em> and <code>False</code> if the user clicks <em>No</em>. <code>askretrycancel</code> (line 17) returns <code>True</code> if the user clicks <em>Retry</em> and <code>False</code> if the user clicks <em>Cancel</em>. <code>askquestion</code> is very similar to <code>askyesno</code>, but returns <code>'yes'</code> if the user clicks <em>Yes</em> and <code>'no'</code> if the user clicks <em>No</em>.</p>
+
+<p>Keep in mind, that the exact appearance of the File Dialog, Color Chooser, and all Message Boxes depends on the operating system that the code is executed on, as well as on the system language.</p>
+
+<h3 id="progressbar">Progress Bar</h3>
+
+<p>Another useful element of advanced GUIs is a <strong>Progress Bar</strong>. The following example shows a simple implementation of this feature using Tkinter:</p>
+
+<pre><code class="language-python">import tkinter  
+import time  
+from tkinter import ttk
+
+root = tkinter.Tk()
+
+def start():  
+    for k in range(1, 11):
+        progress_var.set(k)
+        print("STEP", k)
+        k += 1
+        time.sleep(1)
+        root.update_idletasks()
+
+b1 = tkinter.Button(root, text="START", command=start)  
+b1.pack(side="left")
+
+progress_var = tkinter.IntVar()
+
+pb = ttk.Progressbar(root, orient="horizontal",  
+                     length=200, maximum=10,
+                     mode="determinate",
+                     var=progress_var)
+pb.pack(side="left")
+
+pb["value"] = 0
+
+root.mainloop()  
+</code></pre>
+
+<p><strong>Output:</strong></p>
+
+<p><img class="img-responsive" src="https://s3.amazonaws.com/stackabuse/media/python-gui-development-tkinter-part-3-5.jpg"></p>
+
+<p>The example above shows the implementation of <code>Progressbar</code>. It is a part of the <a rel="nofollow" target="_blank" href="https://docs.python.org/3/library/tkinter.ttk.html">tkinter.ttk</a> module, which provides access to the Tk themed widget set, introduced in <strong>Tk 8.5</strong>. This is why we need to additionally import the <code>ttk</code> module in line 3.</p>
+
+<p>Our progress bar's state will be controlled by time - the bar will progress in ten steps, executed in one-second intervals. For that purpose, we import the <code>time</code> module in line 2.</p>
+
+<p>We define our <code>Progressbar</code> in line 20. We define its parent widget (<code>root</code>), we give it a "horizontal" orientation and a <code>length</code> of 200 pixels. Then, we define the <code>maximum</code> value - which is the value of the variable assigned to the progress bar using the <code>var</code> argument (in our case, the <code>progress_var</code> variable), that means the progress bar is filled completely. We set the <code>mode</code> to "determinate", which means that our code will be moving the indicator's length to precisely defined points based on the <code>progress_var</code>'s value.</p>
+
+<p>The <code>progress_var</code> integer variable that will control the bar's progress is defined in line 18. In line 26, using a dictionary-like assignment, we set the initial value of the progress bar to 0.</p>
+
+<p>In line 15, we create a <code>Button</code> that's supposed to start the clock controlling our bar's progress by executing the <code>start()</code> function, defined between lines 7 and 13. There, we have a simple <code>for</code> loop, that will iterate through values between 1 and 10. With each iteration, the <code>progress_var</code> value is updated and increased by 1. In order to be able to observe the progress clearly, we wait for one second during each iteration (line 12). We then use the root window's <code>update_idletasks()</code> method in line 13, in order to let the program update the appearance of the progress bar even though we're still executing the <code>for</code> loop (so, we're technically still in a single <code>mainloop()</code> iteration).</p>
+
+<h3 id="pythonmegawidgets">Python Mega Widgets</h3>
+
+<p>If you use Tkinter extensively in your projects, I think it's a good idea to consider incorporating <a rel="nofollow" target="_blank" href="http://pmw.sourceforge.net/">Python Mega Widgets</a> in your code. Python Mega Widgets is a toolkit based on Tkinter that offers a set of <em>megawidgets</em>: complex, functional and relatively aesthetically pleasing widgets made out of simpler Tkinter widgets. What's great about this package, which you can download <a rel="nofollow" target="_blank" href="https://sourceforge.net/projects/pmw/files/">here</a> is that the general philosophy of defining and orienting widgets is the same as in case of Tkinter, and you can mix both libraries in your code. Let's finish our tutorial by scratching the surface of this powerful toolkit.</p>
+
+<h4 id="entryfieldwidget">EntryField Widget</h4>
+
+<p>One of the most useful widgets of the Pmw package is <code>EntryField</code>. Let's analyze the following example to see what it's capable of:</p>
+
+<pre><code class="language-python">import tkinter  
+import Pmw
+
+root = tkinter.Tk()
+
+def color_entry_label():  
+    color = entry_color.get()
+    entry_number.configure(label_bg=color)
+
+entry_color = Pmw.EntryField(root, labelpos="w",  
+                                 label_text="First name:",
+                                 entry_bg="white",
+                                 entry_width=15,
+                                 validate="alphabetic")
+
+entry_number = Pmw.EntryField(root, labelpos="w",  
+                                 label_text="Integer:",
+                                 entry_bg="white",
+                                 entry_width=15,
+                                 validate="integer")
+
+ok_button = tkinter.Button(root, text="OK", command=color_entry_label)
+
+entry_color.pack(anchor="e")  
+entry_number.pack(anchor="e")  
+ok_button.pack(fill="x")
+
+root.mainloop()  
+</code></pre>
+
+<p><strong>Output:</strong></p>
+
+<p><img class="img-responsive" src="https://s3.amazonaws.com/stackabuse/media/python-gui-development-tkinter-part-3-6.jpg"></p>
+
+<p>This time, we have to not only import <code>tkinter</code>, but also our freshly installed <code>Pmw</code> package (line 2). As always, we use the <code>Tk</code> class to initiate our root window.</p>
+
+<p>In lines 10-14 and 16-20 we define two <code>Pmw.EntryField</code> widgets. An <code>EntryField</code> is a functional mix of Tkinter's <code>Label</code> and <code>Entry</code>, with some addition of useful functionalities. The first argument for the widget's initialization is, of course, the parent widget. The <code>label_text</code>, <code>entry_bg</code> and <code>entry_width</code> control some self-explanatory aspects of the widget's appearance. The most interesting argument in our example is probably the <code>validate</code> argument. Here, we can decide what kind of data the user can put inside the field.</p>
+
+<p>In the <code>entry_color</code> field, we expect a string of letters, so we set <code>validate</code> to "alphabetic". In the <code>entry_number</code> widget, we expect an integer, and that's what we set the <code>validate</code> argument value to. This way, if we try to put a number inside the former and a letter inside the latter, the symbols simply won't appear in the widgets and a system sound will be played, informing us that we're trying to do something wrong. Also, if the widget expects a certain type of data and its contents are in conflict with this condition the moment it's initialized, the <code>EntryField</code> will be highlighted red.</p>
+
+<p>As you can see in our example, right after we display our window, the first entry field is white, and the second one is red. This is because an empty string (default content of the entries) falls into the category of "alphabetic" entities, but it's definitely not an integer.</p>
+
+<p>The button defined in line 26 executes the <code>color_entry_label()</code> command defined between lines 6 and 8. The function's goal is to paint the <code>entry_number</code> widget label's background according to the contents of the <code>entry_color</code> widget. In line 7, the <code>get()</code> method is used to extract the contents of the <code>entry_color</code> <code>EntryField</code>. Then, naturally, the <code>configure()</code> method is used in order to change the appearance of the <code>entry_number</code> widget. Note that in order to change characteristics of Pmw widgets that are composed of several simpler widgets, we have to specify which sub-widget we want to configure (in our case, it's the label - this is why we configure the <code>label_bg</code> and not, let's say, the <code>entryfield_bg</code>).</p>
+
+<p>The <code>EntryField</code> widget might not be visually very impressive, but even this simple example illustrates the potential of mega-widgets - building this kind of self-verifying piece of the interface of higher complexity would require much more code if we tried to achieve the same effect using plain Tkinter. I encourage you to explore other powerful mega-widgets described in <a rel="nofollow" target="_blank" href="http://pmw.sourceforge.net/doc/index.html">the toolkit's documentation</a>.</p>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>Tkinter is one of many available GUI libraries for Python, but its great advantage is that it's considered a Python standard and still distributed, by default, with all Python distributions. I hope you enjoyed this little tutorial and now have a good grasp on building interfaces for users that might get scared off by command-line operated software.</p>
+
+<script>  
+$(document).ready(function() {
+    $('pre code').each(function(i, block) {
+        hljs.lineNumbersBlock(block);
+    });
+});
+</script>
+					</div>
+					<footer class="post-footer clearfix">
+						<div class="pull-left tag-list">
+							<i class="fa fa-folder-open-o"></i>
+							<a href="/tag/python/">python</a>,<a href="/tag/tkinter/">tkinter</a>
+						</div>
+						<div class="pull-right share">
+							<div>
+	<ul class="share-icons">
+		<!-- twitter -->
+		<li>
+			<a href="https://twitter.com/share?text=Python%20GUI%20Development%20with%20Tkinter%3A%20Part%203&amp;url=https://stackabuse.com/python-gui-development-with-tkinter-part-3/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;"><i class="fa fa-twitter" style="color:#55acee;"></i></a>
+		</li>
+		<!-- facebook -->
+		<li>
+			<a href="https://www.facebook.com/sharer/sharer.php?u=https://stackabuse.com/python-gui-development-with-tkinter-part-3/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;"><i class="fa fa-facebook" style="color:#3b5998;"></i></a>
+		</li>
+		<!-- google plus -->
+		<li>
+			<a href="https://plus.google.com/share?url=https://stackabuse.com/python-gui-development-with-tkinter-part-3/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;"><i class="fa fa-google-plus" style="color:#dc4e41;"></i></a>
+		</li>
+		<!-- linkedin -->
+		<li>
+			<a href="https://www.linkedin.com/shareArticle?mini=true%26url=https://stackabuse.com/python-gui-development-with-tkinter-part-3/%26source=https://stackabuse.com" onclick="window.open(this.href, 'linkedin-share', 'width=490,height=530');return false;"><i class="fa fa-linkedin" style="color:#0077b5;"></i></a>
+		</li>
+	</ul>
+</div>						</div>
+					</footer>
+                    <!-- start about the author -->
+<div class="about-author clearfix">
+		<a href="/author/mateusz/"><img src="/content/images/2018/10/stackabuse_mdobry.jpg" alt="Author image" class="avatar pull-left"></a>
+	<div class="details">
+		<div class="author">
+			About <a href="/author/mateusz/">Mateusz Dobrychlop</a>
+		</div>
+		<div class="meta-info" style="font-style: normal;">
+			<span class="location"><i class="fa fa-home"></i>Poznan, Poland</span>
+		</div>
+		<div class="bio">
+            I use Python to develop bioinformatics tools that help biologists build and visualize structural models of important molecular machines.
+        </div>
+	</div>
+</div>
+<!-- end about the author -->				</article>
+                <!-- start newsletter section -->
+<div class="section">
+    <div class="newsletter text-center">
+        <h4 class="title">Subscribe to our Newsletter</h4>
+        <div class="content">
+            <p>Occasional articles in your inbox. Unsubscribe at any time.</p>
+            <div id="mc_embed_signup">
+                <form action="#" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="form-inline validate" novalidate target="_blank">
+                    <div class="row">
+                        <div class="col-md-7 col-md-offset-1 col-xs-12">
+                            <input type="email" value="" name="EMAIL" class="form-control input-lg required email" id="mce-EMAIL" placeholder="Enter your email..." style="width:100%;">
+                        </div>
+                        <div class="col-md-4 col-xs-12 text-left">
+                            <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="btn btn-default btn-lg btn-subscribe"
+                                ga-on="click"
+                                ga-event-category="Newsletter"
+                                ga-event-action="Signup"
+                                ga-event-label="General-Newsletter-Signup"
+                            >
+                        </div>
+                    </div>
+                    <div style="position: absolute; left: -5000px;">
+                        <input type="text" name="b_90b216fdbe02b25619ec94fc3_bc2bb312cd" tabindex="-1" value="">
+                    </div>
+                </form>
+            </div>
+            <div id="message"></div>
+        </div>
+    </div>
+</div>
+<!-- end newsletter section -->				<div class="comment-wrap">
+					<!-- start disqus comment -->
+<div class="disqus-container">
+	<div id="disqus_thread"></div>
+	    <script type="text/javascript">
+	        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+	        var disqus_shortname = disqus_shortname; // required: replace example with your forum shortname
+
+	        /* * * DON'T EDIT BELOW THIS LINE * * */
+	        (function() {
+	            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+	            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	        })();
+	    </script>
+	    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+<!-- end disqus comment -->				</div>
+				<!-- start prev next wrap -->
+<div class="prev-next-wrap clearfix">
+		<a class="btn btn-default" href="/time-series-analysis-with-lstm-using-pythons-keras-library/"><i class="fa fa-angle-left fa-fw"></i> Previous Post : Time Series Analysis with LSTM using Python&#x27;s Keras Library</a>
+		&nbsp;
+        <a class="btn btn-default" href="/how-to-create-move-and-delete-files-in-python-2/">Next Post : How to Create, Move, and Delete Files in Python <i class="fa fa-angle-right fa-fw"></i></a>
+</div>				<!-- end post -->
+			</div>
+			<!-- end main post area -->
+			<!-- start sidebar -->
+<div class="col-md-4 sidebar">
+	<!-- start widget -->
+<div class="widget">
+	<h4 class="title">
+        Ad
+        <div class="title-inline">
+            <a class="bsa-link" rel="nofollow" target="_blank" href="https://www.buysellads.com/buy/detail/282022">
+                Advertise Here
+            </a>
+        </div>
+    </h4>
+    <div class="content ad" style="height:250px;">
+        <!-- BuySellAds Zone Code -->
+<div id="bsap_1307264" class="bsarocks bsap_023d86b911cfb66415b9b7bd3a3267b4"></div>
+<!-- End BuySellAds Zone Code -->    </div>
+</div>
+<!-- end widget -->	<!-- start widget -->
+<div class="widget">
+	<h4 class="title">Recent Posts</h4>
+	<div class="content recent-post"></div>
+</div>
+<!-- end widget -->	<!-- start tag cloud widget -->
+<div class="widget">
+	<h4 class="title">Newsletter</h4>
+	<div class="content newsletter">
+		<p>Subscribe to our newsletter</p>
+		<div id="mc_embed_signup">
+			<form action="#" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" novalidate target="_blank">
+				<div class="input-group">
+					<input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL" placeholder="Enter your email...">
+				</div>
+				<div style="position: absolute; left: -5000px;">
+				<input type="text" name="b_90b216fdbe02b25619ec94fc3_bc2bb312cd" tabindex="-1" value="">
+				</div>
+				<div class="input-group">
+					<input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="btn btn-default"
+                        ga-on="click"
+                        ga-event-category="Newsletter"
+                        ga-event-action="Signup"
+                        ga-event-label="General-Newsletter-Signup"
+                    >
+				</div>
+			</form>
+		</div>
+		<div id="message"></div>
+	</div>
+</div>
+<!-- end tag cloud widget -->    <!-- start widget -->
+<div class="widget">
+    <h4 class="title">
+        Ad
+        <div class="title-inline">
+            <a class="bsa-link" rel="nofollow" target="_blank" href="https://www.buysellads.com/buy/detail/282022">
+                Advertise Here
+            </a>
+        </div>
+    </h4>
+    <div class="content ad" style="height:250px;">
+        <!-- BuySellAds Zone Code -->
+<div id="bsap_1307384" class="bsarocks bsap_023d86b911cfb66415b9b7bd3a3267b4"></div>
+<!-- End BuySellAds Zone Code -->    </div>
+</div>
+<!-- end widget -->    <div class="widget-sticky">
+        <!-- start widget -->
+<div class="widget">
+    <h4 class="title">Want a remote job?</h4>
+    <div class="content jobs">
+        <ul style="margin-bottom: 0px;">
+        </ul>
+        <div class="row" style="margin-right: -40px;">
+            <div class="col-md-3">
+                <strong>
+                    <!-- <a rel="nofollow" target="_blank"
+                        href="http://www.indeed.com/jobs?indpubnum=4838297301202088&chnl=stackabuse&q=programming"
+                        ga-on="click"
+                        ga-event-category="Jobs"
+                        ga-event-action="Click"
+                        ga-event-label="ZR-More-Jobs"
+                    >
+                        <i class="fa fa-arrow-circle-right"></i> More jobs
+                    </a> -->
+                    <a target="_blank" class="btn btn-default" href="/jobs" style="margin-top: 10px;">
+                        <i class="fa fa-arrow-circle-right"></i>&nbsp; More jobs
+                    </a>
+                </strong>
+            </div>
+            <!-- <div class="col-md-9 text-right">
+                <span>Jobs by</span>
+                <a
+                    rel="nofollow" target="_blank"
+                    href="https://www.ziprecruiter.com/jobs"
+                    id="jobs_widget_link"
+                    ga-on="click"
+                    ga-event-category="Jobs"
+                    ga-event-action="Click"
+                    ga-event-label="ZR-Jobs-By"
+                >
+                    <span id="zr_logo_container">
+                        <img
+                            id="zr_logo"
+                            src="https://www.ziprecruiter.com/img/logos/logo-sm-black-304px.png" alt="ZipRecruiter"
+                            width="100"
+                        />
+                    </span>
+                </a>
+            </div> -->
+        </div>
+    </div>
+</div>
+<!-- end widget -->        <!-- start widget -->
+<div class="widget">
+    <a rel="nofollow" target="_blank"
+       class="dcp-link"
+       href="http://stackabu.se/daily-coding-problem"
+       style="text-decoration: none;"
+    >
+        <h4 class="title">Interviewing for a job?</h4>
+    </a>
+    <div class="content product">
+        <style type="text/css">
+            #product-features li {
+                margin: 5px 0;
+            }
+        </style>
+        <div id="product-features" style="font-size: 16px;line-height: 1.7em;">
+            <ul style="list-style: initial;">
+                <li>
+                    Improve your skills by solving one coding problem every day
+                </li>
+                <li>
+                    Get the solutions the next morning via email
+                </li>
+                <li>
+                    Practice on <strong>actual problems</strong> asked by top companies, like:
+                    <div style="margin: 15px 0px;">
+                        <img src="/assets/images/logo-google.svg?v=91ac276b65" style="height: 18px;">
+                        &nbsp;
+                        <img src="/assets/images/logo-facebook.svg?v=91ac276b65" style="height: 14px;margin-bottom: 3px;">
+                        &nbsp;
+                        <img src="/assets/images/logo-amazon.svg?v=91ac276b65" style="height: 20px;">
+                        &nbsp;
+                        <img src="/assets/images/logo-microsoft.svg?v=91ac276b65" style="height: 20px;">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-5">
+                <a rel="nofollow" target="_blank"
+                   class="btn btn-default dcp-link"
+                   href="http://stackabu.se/daily-coding-problem"
+                >
+                    <i class="fa fa-code"></i>
+                    &nbsp;
+                    Daily Coding Problem
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end widget -->    </div>
+</div>
+<!-- end sidebar -->		</div>
+	</div>
+</section>
+<!-- end site's main content area -->
+
+	<!-- start main-footer -->
+	<footer class="main-footer">
+		<div class="container">
+			<div class="row">
+				<!-- start first footer widget area -->
+				<div class="col-sm-4">
+					<!-- start widget -->
+<div class="widget">
+	<h4 class="title">Recent Posts</h4>
+	<div class="content recent-post"></div>
+</div>
+<!-- end widget -->				</div>
+				<!-- end first footer widget area -->
+				<!-- start second footer widget area -->
+				<div class="col-sm-4">
+					<!-- start tag cloud widget -->
+<div class="widget">
+	<h4 class="title">Tags</h4>
+	<div class="content tag-cloud"></div>
+</div>
+<!-- end tag cloud widget -->				</div>
+				<!-- end second footer widget area -->
+				<!-- start third footer widget area -->
+				<div class="col-sm-4">
+					<!-- start widget -->
+<div class="widget">
+	<h4 class="title">Follow</h4>
+	<div class="content">
+		<ul class="social">
+			<!-- start social links -->
+			<!-- replace the # with your own profile link address -->
+			<li><a href="https://twitter.com/ScottWRobinson"><i class="fa fa-twitter"></i></a></li>
+			<li><a href="https://www.facebook.com/stackabuse"><i class="fa fa-facebook"></i></a></li>
+			<!--<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+			<li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+			<li><a href="#"><i class="fa fa-skype"></i></a></li>
+			<li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+			<li><a href="#"><i class="fa fa-youtube"></i></a></li>
+			<li><a href="#"><i class="fa fa-vimeo-square"></i></a></li>
+			<li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+			<li><a href="#"><i class="fa fa-flickr"></i></a></li>
+			<li><a href="#"><i class="fa fa-tumblr"></i></a></li>-->
+			<li><a href="https://github.com/scottwrobinson"><i class="fa fa-github"></i></a></li>
+			<!--<li><a href="#"><i class="fa fa-instagram"></i></a></li>
+			<li><a href="#"><i class="fa fa-stack-overflow"></i></a></li>
+			<li><a href="#"><i class="fa fa-stack-exchange"></i></a></li>
+			<li><a href="#"><i class="fa fa-xing"></i></a></li>
+			<li><a href="#"><i class="fa fa-envelope"></i></a></li>-->
+			<li><a href="https://stackabuse.com/rss/"><i class="fa fa-rss"></i></a></li>
+			<!-- end social links -->
+		</ul>
+	</div>
+</div>
+<!-- end widget -->				</div>
+				<!-- end third footer widget area -->
+			</div>
+		</div>
+	</footer>
+	<!-- end main-footer -->
+	<!-- start copyright section -->
+<div class="copyright">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12">
+				Copyright &copy; 2018, <a href="https://stackabuse.com">Stack Abuse</a>.  All Right Reserved
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end copyright section -->	<div class="footer-links">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<a href="/disclosure">Disclosure</a>
+					•
+					<a href="/privacy-policy">Privacy Policy</a>
+					•
+					<a href="/terms-of-service">Terms of Service</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<a href="#" id="back-to-top"><i class="fa fa-angle-up"></i></a>
+	<!--
+<script src="//my.hellobar.com/4dd9990be00532b0fc7961824b7d7a0930e9e2b7.js" type="text/javascript" charset="utf-8" async="async"></script>
+-->
+	<!-- scripts -->
+	<script type="text/javascript">
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+    </script>
+    <script src="/assets/js/jquery.adsenseloader.js?v=91ac276b65"></script>
+	<script src="/assets/js/jquery.fitvids.js?v=91ac276b65"></script>
+	<script src="/assets/js/bootstrap.min.js?v=91ac276b65"></script>
+	<script src="/assets/js/jflickrfeed.min.js?v=91ac276b65"></script>
+	<!-- <script src="/assets/js/highlight.pack.js?v=91ac276b65"></script> -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.4.0/highlightjs-line-numbers.min.js"></script>
+	<!-- <script src="/assets/js/indeed.js?v=91ac276b65"></script> -->
+	<script src="/assets/js/main.js?v=91ac276b65"></script>
+	<!-- <script src="//gdc.indeed.com/ads/apiresults.js" type="text/javascript"></script> -->
+	<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript" async></script>
+	<!-- Add your analytic code below -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-43140675-1', 'auto');
+  ga('require', 'eventTracker');
+  ga('send', 'pageview');
+
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/autotrack/1.0.1/autotrack.js"></script></body>
+</html>

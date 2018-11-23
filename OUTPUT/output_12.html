@@ -1,0 +1,1013 @@
+
+<!DOCTYPE html>
+<html lang="en-US" prefix="og: http://ogp.me/ns#">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="profile" href="https://gmpg.org/xfn/11">
+<link rel="pingback" href="https://www.marsja.se/xmlrpc.php">
+<title>How to use Pandas Sample to Select Rows and Columns</title>
+
+<meta name="description" content="Here we will learn how to use Pandas Sample to select rows, set a random seed, sample by group, using weights, and conditions, among other useful things" />
+<link rel="canonical" href="https://www.marsja.se/pandas-sample-randomly-select-rows/" />
+<link rel="publisher" href="https://www.google.com/+ErikMarsja" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="How to use Pandas Sample to Select Rows and Columns" />
+<meta property="og:description" content="Here we will learn how to use Pandas Sample to select rows, set a random seed, sample by group, using weights, and conditions, among other useful things" />
+<meta property="og:url" content="https://www.marsja.se/pandas-sample-randomly-select-rows/" />
+<meta property="og:site_name" content="Erik Marsja" />
+<meta property="article:tag" content="Numpy" />
+<meta property="article:tag" content="Pandas" />
+<meta property="article:tag" content="Rows" />
+<meta property="article:tag" content="Sample" />
+<meta property="article:tag" content="Selecting" />
+<meta property="article:tag" content="Subset" />
+<meta property="article:section" content="Programming" />
+<meta property="article:published_time" content="2018-11-12T11:01:09+00:00" />
+<meta property="article:modified_time" content="2018-11-16T08:06:50+00:00" />
+<meta property="og:updated_time" content="2018-11-16T08:06:50+00:00" />
+<meta property="og:image" content="https://www.marsja.se/wp-content/uploads/2018/11/pandas-sample-rows-dataframe.png" />
+<meta property="og:image:secure_url" content="https://www.marsja.se/wp-content/uploads/2018/11/pandas-sample-rows-dataframe.png" />
+
+<link rel='dns-prefetch' href='//s0.wp.com' />
+<link rel='dns-prefetch' href='//secure.gravatar.com' />
+<link rel='dns-prefetch' href='//platform-api.sharethis.com' />
+<link rel='dns-prefetch' href='//fonts.googleapis.com' />
+<link rel='dns-prefetch' href='//s.w.org' />
+<link rel='dns-prefetch' href='//dsms0mj1bbhn4.cloudfront.net' />
+<link rel='dns-prefetch' href='//apps.shareaholic.com' />
+<link rel='dns-prefetch' href='//grace.shareaholic.com' />
+<link rel='dns-prefetch' href='//analytics.shareaholic.com' />
+<link rel='dns-prefetch' href='//recs.shareaholic.com' />
+<link rel='dns-prefetch' href='//go.shareaholic.com' />
+<link rel='dns-prefetch' href='//partner.shareaholic.com' />
+<link rel="alternate" type="application/rss+xml" title="Erik Marsja &raquo; Feed" href="https://www.marsja.se/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Erik Marsja &raquo; Comments Feed" href="https://www.marsja.se/comments/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Erik Marsja &raquo; How to use Pandas Sample to Select Rows and Columns Comments Feed" href="https://www.marsja.se/pandas-sample-randomly-select-rows/feed/" />
+
+<link rel='preload' href='//dsms0mj1bbhn4.cloudfront.net/assets/pub/shareaholic.js' as='script' />
+<script type='text/javascript' data-cfasync='false'>
+  //<![CDATA[
+    _SHR_SETTINGS = {"endpoints":{"local_recs_url":"https:\/\/www.marsja.se\/wp-admin\/admin-ajax.php?action=shareaholic_permalink_related","ajax_url":"https:\/\/www.marsja.se\/wp-admin\/admin-ajax.php","share_counts_url":"https:\/\/www.marsja.se\/wp-admin\/admin-ajax.php?action=shareaholic_share_counts_api"},"url_components":{"year":"2018","monthnum":"11","day":"12","hour":"12","minute":"01","second":"09","post_id":"2561","postname":"pandas-sample-randomly-select-rows","author":"marsja","category":"programming"}};
+  //]]>
+</script>
+<script type='text/javascript' data-cfasync='false' src='//dsms0mj1bbhn4.cloudfront.net/assets/pub/shareaholic.js' data-shr-siteid='71cde276ebe3b5d9fbc84368a746b322' async>
+</script>
+
+<meta name='shareaholic:site_name' content='Erik Marsja' />
+<meta name='shareaholic:language' content='en-US' />
+<meta name='shareaholic:url' content='https://www.marsja.se/pandas-sample-randomly-select-rows/' />
+<meta name='shareaholic:keywords' content='numpy, pandas, rows, sample, selecting, subset, pandas sample, programming, python, post' />
+<meta name='shareaholic:article_published_time' content='2018-11-12T12:01:09+01:00' />
+<meta name='shareaholic:article_modified_time' content='2018-11-16T09:06:50+01:00' />
+<meta name='shareaholic:shareable_page' content='true' />
+<meta name='shareaholic:article_author_name' content='Erik Marsja' />
+<meta name='shareaholic:site_id' content='71cde276ebe3b5d9fbc84368a746b322' />
+<meta name='shareaholic:wp_version' content='8.10.2' />
+<meta name='shareaholic:image' content='https://www.marsja.se/wp-content/uploads/2018/11/pandas-sample-rows-dataframe.png' />
+
+<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/11\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/11\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/www.marsja.se\/wp-includes\/js\/wp-emoji-release.min.js?ver=9492d9369baf94290752311abbf4aafc"}};
+			!function(a,b,c){function d(a,b){var c=String.fromCharCode;l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,a),0,0);var d=k.toDataURL();l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,b),0,0);var e=k.toDataURL();return d===e}function e(a){var b;if(!l||!l.fillText)return!1;switch(l.textBaseline="top",l.font="600 32px Arial",a){case"flag":return!(b=d([55356,56826,55356,56819],[55356,56826,8203,55356,56819]))&&(b=d([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]),!b);case"emoji":return b=d([55358,56760,9792,65039],[55358,56760,8203,9792,65039]),!b}return!1}function f(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var g,h,i,j,k=b.createElement("canvas"),l=k.getContext&&k.getContext("2d");for(j=Array("flag","emoji"),c.supports={everything:!0,everythingExceptFlag:!0},i=0;i<j.length;i++)c.supports[j[i]]=e(j[i]),c.supports.everything=c.supports.everything&&c.supports[j[i]],"flag"!==j[i]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[j[i]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(h=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",h,!1),a.addEventListener("load",h,!1)):(a.attachEvent("onload",h),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),g=c.source||{},g.concatemoji?f(g.concatemoji):g.wpemoji&&g.twemoji&&(f(g.twemoji),f(g.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel='stylesheet' id='crayon-css' href='https://www.marsja.se/wp-content/plugins/crayon-syntax-highlighter/css/min/crayon.min.css?ver=_2.7.2_beta' type='text/css' media='all' />
+<link rel='stylesheet' id='crayon-theme-github-css' href='https://www.marsja.se/wp-content/plugins/crayon-syntax-highlighter/themes/github/github.css?ver=_2.7.2_beta' type='text/css' media='all' />
+<link rel='stylesheet' id='crayon-font-monaco-css' href='https://www.marsja.se/wp-content/plugins/crayon-syntax-highlighter/fonts/monaco.css?ver=_2.7.2_beta' type='text/css' media='all' />
+<link rel='stylesheet' id='contact-form-7-css' href='https://www.marsja.se/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=5.0.5' type='text/css' media='all' />
+<link rel='stylesheet' id='gglcptch-css' href='https://www.marsja.se/wp-content/plugins/google-captcha/css/gglcptch.css?ver=1.37' type='text/css' media='all' />
+<link rel='stylesheet' id='ez-icomoon-css' href='https://www.marsja.se/wp-content/plugins/easy-table-of-contents/vendor/icomoon/style.min.css?ver=1.7' type='text/css' media='all' />
+<link rel='stylesheet' id='ez-toc-css' href='https://www.marsja.se/wp-content/plugins/easy-table-of-contents/assets/css/screen.min.css?ver=1.7' type='text/css' media='all' />
+<style id='ez-toc-inline-css' type='text/css'>
+div#ez-toc-container p.ez-toc-title {font-size: 120%;}div#ez-toc-container p.ez-toc-title {font-weight: 500;}div#ez-toc-container ul li {font-size: 95%;}
+</style>
+<link rel='stylesheet' id='decode-icomoon-css' href='https://www.marsja.se/wp-content/themes/decode/assets/icomoon.css?ver=3.0.7' type='text/css' media='all' />
+<link rel='stylesheet' id='decode-style-css' href='https://www.marsja.se/wp-content/themes/decode/style.css?ver=3.0.7' type='text/css' media='all' />
+<link rel='stylesheet' id='decode-font-stylesheet-css' href='//fonts.googleapis.com/css?family=Oxygen&#038;ver=9492d9369baf94290752311abbf4aafc' type='text/css' media='all' />
+<link rel='stylesheet' id='social-logos-css' href='https://www.marsja.se/wp-content/plugins/jetpack/_inc/social-logos/social-logos.min.css?ver=1' type='text/css' media='all' />
+<link rel='stylesheet' id='jetpack_css-css' href='https://www.marsja.se/wp-content/plugins/jetpack/css/jetpack.css?ver=6.7' type='text/css' media='all' />
+<script type='text/javascript' src='https://www.marsja.se/wp-includes/js/jquery/jquery.js?ver=1.12.4'></script>
+<script type='text/javascript' src='https://www.marsja.se/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var CrayonSyntaxSettings = {"version":"_2.7.2_beta","is_admin":"0","ajaxurl":"https:\/\/www.marsja.se\/wp-admin\/admin-ajax.php","prefix":"crayon-","setting":"crayon-setting","selected":"crayon-setting-selected","changed":"crayon-setting-changed","special":"crayon-setting-special","orig_value":"data-orig-value","debug":""};
+var CrayonSyntaxStrings = {"copy":"Press %s to Copy, %s to Paste","minimize":"Click To Expand Code"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://www.marsja.se/wp-content/plugins/crayon-syntax-highlighter/js/min/crayon.min.js?ver=_2.7.2_beta'></script>
+<script type='text/javascript' src='//platform-api.sharethis.com/js/sharethis.js#product=ga'></script>
+<link rel='https://api.w.org/' href='https://www.marsja.se/wp-json/' />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.marsja.se/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://www.marsja.se/wp-includes/wlwmanifest.xml" />
+<link rel='shortlink' href='https://wp.me/p5bFFs-Fj' />
+<link rel="alternate" type="application/json+oembed" href="https://www.marsja.se/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.marsja.se%2Fpandas-sample-randomly-select-rows%2F" />
+<link rel="alternate" type="text/xml+oembed" href="https://www.marsja.se/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.marsja.se%2Fpandas-sample-randomly-select-rows%2F&#038;format=xml" />
+
+<script type="text/javascript">
+_atrk_opts = { atrk_acct:"SwrRm1a4KM+2O7", domain:"marsja.se",dynamic: true};
+(function() { var as = document.createElement('script'); as.type = 'text/javascript'; as.async = true; as.src = "https://d31qbv1cthcecs.cloudfront.net/atrk.js"; var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(as, s); })();
+</script>
+<noscript><img src="https://d5nxst8fruw4z.cloudfront.net/atrk.gif?account=SwrRm1a4KM+2O7" style="display:none" height="1" width="1" alt="" /></noscript>
+
+<script type="text/javascript">
+(function(url){
+	if(/(?:Chrome\/26\.0\.1410\.63 Safari\/537\.31|WordfenceTestMonBot)/.test(navigator.userAgent)){ return; }
+	var addEvent = function(evt, handler) {
+		if (window.addEventListener) {
+			document.addEventListener(evt, handler, false);
+		} else if (window.attachEvent) {
+			document.attachEvent('on' + evt, handler);
+		}
+	};
+	var removeEvent = function(evt, handler) {
+		if (window.removeEventListener) {
+			document.removeEventListener(evt, handler, false);
+		} else if (window.detachEvent) {
+			document.detachEvent('on' + evt, handler);
+		}
+	};
+	var evts = 'contextmenu dblclick drag dragend dragenter dragleave dragover dragstart drop keydown keypress keyup mousedown mousemove mouseout mouseover mouseup mousewheel scroll'.split(' ');
+	var logHuman = function() {
+		if (window.wfLogHumanRan) { return; }
+		window.wfLogHumanRan = true;
+		var wfscr = document.createElement('script');
+		wfscr.type = 'text/javascript';
+		wfscr.async = true;
+		wfscr.src = url + '&r=' + Math.random();
+		(document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(wfscr);
+		for (var i = 0; i < evts.length; i++) {
+			removeEvent(evts[i], logHuman);
+		}
+	};
+	for (var i = 0; i < evts.length; i++) {
+		addEvent(evts[i], logHuman);
+	}
+})('//www.marsja.se/?wordfence_lh=1&hid=20DF6404CBA64D5965E4C7CAA5C5B056');
+</script>
+<link rel='dns-prefetch' href='//v0.wordpress.com' />
+<link rel='dns-prefetch' href='//widgets.wp.com' />
+<link rel='dns-prefetch' href='//s0.wp.com' />
+<link rel='dns-prefetch' href='//0.gravatar.com' />
+<link rel='dns-prefetch' href='//1.gravatar.com' />
+<link rel='dns-prefetch' href='//2.gravatar.com' />
+<style type='text/css'>img#wpstats{display:none}</style>
+
+<style type="text/css">
+
+			body, .sidebar, .sidebar-top, .menu ul ul, .header-style-ghost .site { background-color: #d8d8d8; }body, button, input, select, textarea, .site-title a, .menu a, .entry-title, .search-entry, .search-entry .entry-title, .entry-title a, .format-link .entry-title h2 a, .read-more, .author-name a, .explore-page .widget h1, .decode-reply-tool-plugin .replylink, .decode-reply-tool-plugin .replytrigger { color: #4C4C4C; }.page-link { border-color: #4C4C4C; }.menu ul > .menu-item-has-children > a::after, .menu ul > .page_item_has_children > a::after { border-top-color: #4C4C4C; }.footer-menu ul > .menu-item-has-children > a::after, .footer-menu ul > .page_item_has_children > a::after { border-bottom-color: #4C4C4C; }.menu-icon, .close-icon, .social-icon-fill { fill: #4C4C4C; }a, .no-touch a:hover, button, input[type=button], input[type=reset], input[type=submit], .no-touch .site-title a:hover, .no-touch .menu a:hover, .menu ul li.open > a, .sidebar-menu a, .menu .current-menu-item > a, .menu .current_page_item > a, .no-touch .search-entry:hover, .no-touch .search-entry:hover .entry-title, .no-touch article .date a:hover, .no-touch .format-link .entry-title a:hover, .no-touch .comment-metadata a:hover, .no-touch .decode-reply-tool-plugin .replylink:hover { color: #00b0cc; }.no-touch button:hover, .no-touch input[type=button]:hover, .no-touch input[type=reset]:hover, .no-touch input[type=submit]:hover, .no-touch input[type=text]:focus, .touch input[type=text]:focus, .no-touch input[type=email]:focus, .touch input[type=email]:focus, .no-touch input[type=password]:focus, .touch input[type=password]:focus, .no-touch input[type=search]:focus, .touch input[type=search]:focus, .no-touch input[type=tel]:focus, .touch input[type=tel]:focus, .no-touch input[type=url]:focus, .touch input[type=url]:focus, .no-touch textarea:focus, .touch textarea:focus, .no-touch .site-description a:hover, .no-touch .entry-content a:hover, a .page-link, .no-touch .categories a:hover, .no-touch .tags a:hover, .no-touch .comments-link a:hover, .no-touch .edit-link a:hover, .no-touch .author-site a:hover, .no-touch .theme-info a:hover, .no-touch .site-colophon a:hover, .site-header, .menu ul ul, .menu a:focus, .site-breadcrumbs, .page-title, .post blockquote, .page blockquote, .entry-footer, .entry-header .entry-meta, .search .entry-footer, .sidebar-top, .sidebar-style-constant .sidebar.left, .sidebar-style-constant .sidebar.right, .explore-page .widget h1 { border-color: #00b0cc; }.no-touch .menu ul > .menu-item-has-children > a:hover::after, .no-touch .menu ul > .page_item_has_children > a:hover::after, .menu ul li.open > a::after, .sidebar-menu ul .menu-item-has-children > a::after, .sidebar-menu ul .page_item_has_children > a::after, .menu ul > .current_page_item.menu-item-has-children > a::after, .menu ul > .current_page_item.page_item_has_children > a::after { border-top-color: #00b0cc; }.no-touch .footer-menu ul > .menu-item-has-children > a:hover::after, .no-touch .footer-menu ul > .page_item_has_children > a:hover::after, .footer-menu ul > li.open > a::after, .footer-menu ul > .current_page_item.menu-item-has-children > a::after, .footer-menu ul > .current_page_item.page_item_has_children > a::after { border-bottom-color: #00b0cc; }.no-touch a:active, .no-touch button:focus, .touch button:focus, .no-touch button:active, .touch button:active, .no-touch input[type=button]:focus, .touch input[type=button]:focus, .no-touch input[type=button]:active, .touch input[type=button]:active, .no-touch input[type=reset]:focus, .touch input[type=reset]:focus, .no-touch input[type=reset]:active, .touch input[type=reset]:active, .no-touch input[type=submit]:focus, .touch input[type=submit]:focus, .no-touch input[type=submit]:active, .touch input[type=submit]:active, .no-touch .site-title a:active, .no-touch .menu a:active, .no-touch .sidebar-menu a:hover, .sidebar-menu ul li.open > a, .menu .current-menu-item > a:hover, .menu .current_page_item > a:hover, .sidebar-menu ul .current-menu-item > a, .sidebar-menu ul .current_page_item > a, .no-touch .sidebar-content a:hover, .no-touch .search-entry:active, .no-touch .search-entry:active .entry-title, .no-touch article .date a:active, .no-touch .format-link .entry-title a:active, .no-touch .comment-metadata a:active, .no-touch .site-description a:active, .decode-reply-tool-plugin .replylink:active, .no-touch .decode-reply-tool-plugin .replylink:active { color: #121419; }.no-touch button:focus, .touch button:focus, .no-touch button:active, .touch button:active, .no-touch input[type=button]:focus, .touch input[type=button]:focus, .no-touch input[type=button]:active, .touch input[type=button]:active, .no-touch input[type=reset]:focus, .touch input[type=reset]:focus, .no-touch input[type=reset]:active, .touch input[type=reset]:active, .no-touch input[type=submit]:focus, .touch input[type=submit]:focus, .no-touch input[type=submit]:active, .touch input[type=submit]:active, .no-touch .site-description a:active, .no-touch .entry-content a:active, a .page-link:active .no-touch .categories a:active, .no-touch .tags a:active, .no-touch .comments-link a:active, .no-touch .edit-link a:active, .no-touch .author-site a:active, .no-touch .theme-info a:active, .no-touch .site-colophon a:active { border-color: #121419; }.no-touch .menu ul > .menu-item-has-children > a:active::after, .no-touch .menu ul > .page_item_has_children > a:active::after, .no-touch .sidebar-menu ul .menu-item-has-children > a:hover::after, .no-touch .sidebar-menu ul .page_item_has_children > a:hover::after, .sidebar-menu ul li.open > a::after, .sidebar-menu ul .current_page_item.menu-item-has-children > a::after, .sidebar-menu ul .current_page_item.page_item_has_children > a::after { border-top-color: #121419; }.no-touch .footer-menu ul > .menu-item-has-children > a:active::after, .no-touch .footer-menu ul > .page_item_has_children > a:active::after { border-bottom-color: #121419; }.no-touch input[type=text]:hover, .no-touch input[type=email]:hover, .no-touch input[type=password]:hover, .no-touch input[type=search]:hover, .no-touch input[type=tel]:hover, .no-touch input[type=url]:hover, .no-touch textarea:hover, article .tags, article .categories, article .date, article .date a, .comment-metadata a, .search .page-header input[type=search] { color: #8C8C8C; }.no-touch input[type=text]:hover, .no-touch input[type=email]:hover, .no-touch input[type=password]:hover, .no-touch input[type=search]:hover, .no-touch input[type=tel]:hover, .no-touch input[type=url]:hover, .no-touch textarea:hover, .no-touch .search .page-header input[type=search]:hover { border-color: #8C8C8C; }.no-touch input[type=text]:focus, .touch input[type=text]:focus, .no-touch input[type=email]:focus, .touch input[type=email]:focus, .no-touch input[type=password]:focus, .touch input[type=password]:focus, .no-touch input[type=search]:focus, .touch input[type=search]:focus, .no-touch input[type=tel]:focus, .touch input[type=tel]:focus, .no-touch input[type=url]:focus, .touch input[type=url]:focus, .no-touch textarea:focus, .touch textarea:focus { color: #4C4C4C; }.no-touch input[type=text]:focus, .touch input[type=text]:focus, .no-touch input[type=email]:focus, .touch input[type=email]:focus, .no-touch input[type=password]:focus, .touch input[type=password]:focus, .no-touch input[type=search]:focus, .touch input[type=search]:focus, .no-touch input[type=tel]:focus, .touch input[type=tel]:focus, .no-touch input[type=url]:focus, .touch input[type=url]:focus, .no-touch textarea:focus, .touch textarea:focus, .no-touch .search .page-header input[type=search]:focus, .touch .search .page-header input[type=search]:focus { border-color: #00b0cc; }
+			@media (min-width: 68.5em) {
+
+				.site-main {
+					max-width: none;
+				}
+
+			.site-main { width: 50%; }
+			}
+
+		</style>
+<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+<style type="text/css">.broken_link, a.broken_link {
+	text-decoration: line-through;
+}</style><style type="text/css" id="custom-background-css">
+body.custom-background { background-color: #d8d8d8; }
+</style>
+<link rel="amphtml" href="https://www.marsja.se/pandas-sample-randomly-select-rows/amp/"></head>
+<body class="post-template-default single single-post postid-2561 single-format-standard custom-background sidebar-style-closing sidebar-style-left">
+<div id="page" class="hfeed site">
+<a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+<button id="sidebar-link" class="sidebar-link SidebarLink left" title="Show sidebar">
+<svg width="100%" height="100%" viewBox="0 0 240 200" version="1.1" xmlns="http://www.w3.org/2000/svg">
+<g class="menu-icon" fill-rule="evenodd">
+<path d="M0,160 L0,200 L240,200 L240,160 L0,160 Z M0,160"></path>
+<path d="M0,80 L0,120 L240,120 L240,80 L0,80 Z M0,80"></path>
+<path d="M0,0 L0,40 L240,40 L240,0 L0,0 Z M0,0"></path>
+</g>
+</svg>
+</button>
+<header id="masthead" class="site-header" role="banner" style="background-position: center center; background-attachment: fixed; -webkit-background-size: cover; -moz-background-size: cover; -ms-background-size: cover; background-size: cover;">
+<div class="site-branding">
+<h1 class="site-title">
+<a href="https://www.marsja.se/" title="Erik Marsja" rel="home">Erik Marsja</a>
+</h1>
+<h2 class="site-description">Python and R as tools of data analysis and building psychological experiments</h2>
+</div>
+<nav id="header-menu" class="menu horizontal-menu header-menu" role="navigation"><ul><li id="menu-item-5" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-5"><a href="https://www.marsja.se/">Home</a></li>
+<li id="menu-item-6" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-6"><a title="About me" href="https://www.marsja.se/erik/">About</a></li>
+<li id="menu-item-25" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-25"><a href="https://www.marsja.se/cv/">CV</a></li>
+<li id="menu-item-195" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-195"><a href="https://www.marsja.se/projects/">Projects</a></li>
+<li id="menu-item-341" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-341"><a href="https://www.marsja.se/links/">Python &#038; R resources</a></li>
+<li id="menu-item-2201" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2201"><a href="https://www.marsja.se/contact/">Contact</a></li>
+<li id="menu-item-2388" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2388"><a href="https://www.marsja.se/tos/">Terms of Service</a></li>
+</ul></nav>
+</header>
+<div id="content" class="site-content ">
+<div id="primary" class="content-area">
+<main id="main" class="site-main" role="main">
+<article id="post-2561" class="post-2561 post type-post status-publish format-standard hentry category-programming category-python tag-numpy tag-pandas tag-rows tag-sample tag-selecting tag-subset">
+<header class="entry-header">
+<h1 class="entry-title">How to use Pandas Sample to Select Rows and Columns</h1>
+<div class="entry-meta">
+<p class="date"><span class="posted-on"><a href="https://www.marsja.se/pandas-sample-randomly-select-rows/" rel="bookmark"><i class="icon-calendar"></i><time class="entry-date published" datetime="2018-11-12T12:01:09+00:00">November 12, 2018</time><time class="updated screen-reader-text" datetime="2018-11-16T09:06:50+00:00">November 16, 2018</time></a></span><span class="byline"> <span class="author vcard"><a class="url fn n" href="https://www.marsja.se/author/marsja/"><i class="icon-user"></i>Erik Marsja</a></span></span><span clas="post-comments"><a href="https://www.marsja.se/pandas-sample-randomly-select-rows/#respond"><i class="icon-comment"></i>No Comments</a></span></p>
+</div>
+</header>
+<div class="entry-content">
+<p>In this tutorial we will learn how to use Pandas sample to randomly select rows and columns from a Pandas dataframe. There are some reasons for randomly sample our data; for instance, we may have a very large dataset and want to build our models on a smaller sample of the data. Other examples are when carrying out bootstrapping or cross-validation. Here we will learn how to; select rows at random, set a random seed, sample by group, using weights, and conditions, among other useful things.</p>
+
+<div class="quads-location quads-ad3" id="quads-ad3" style="float:none;margin:0px;">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-7105485911170795",
+          enable_page_level_ads: true
+     });
+</script>
+</div>
+
+<div class="quads-location quads-ad1" id="quads-ad1" style="float:none;margin:0px;">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-7105485911170795",
+          enable_page_level_ads: true
+     });
+</script>
+</div>
+
+<div class="quads-location quads-ad2" id="quads-ad2" style="float:none;margin:0px;">
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7105485911170795" data-ad-slot="9182399841" data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+</div>
+<div id="ez-toc-container" class="counter-hierarchy counter-decimal ez-toc-grey">
+<div class="ez-toc-title-container">
+<p class="ez-toc-title">Table of Contents</p>
+<span class="ez-toc-title-toggle"><a class="ez-toc-pull-right ez-toc-btn ez-toc-btn-xs ez-toc-btn-default ez-toc-toggle"><i class="ez-toc-glyphicon ez-toc-icon-toggle"></i></a></span></div>
+<nav><ul class="ez-toc-list"><li><a href="#How_to_Take_a_Random_Sample_of_Rows" title="How to Take a Random Sample of Rows">How to Take a Random Sample of Rows</a><ul><li><a href="#Random_Sampling_Rows_using_NumPy_Choice" title="Random Sampling Rows using NumPy Choice">Random Sampling Rows using NumPy Choice</a></li></ul></li><li><a href="#How_to_Sample_Pandas_Dataframe_using_frac" title="How to Sample Pandas Dataframe using frac">How to Sample Pandas Dataframe using frac</a><ul><li><a href="#How_to_Shuffle_Pandas_Dataframe_using_Numpy" title="How to Shuffle Pandas Dataframe using Numpy">How to Shuffle Pandas Dataframe using Numpy</a></li></ul></li><li><a href="#Pandas_Sample_with_Replacement" title="Pandas Sample with Replacement">Pandas Sample with Replacement</a></li><li><a href="#Sample_Dataframe_with_Seed" title="Sample Dataframe with Seed">Sample Dataframe with Seed</a></li><li><a href="#Pandas_Sample_with_Weights" title="Pandas Sample with Weights">Pandas Sample with Weights</a></li><li><a href="#Pandas_Sample_by_Group" title="Pandas Sample by Group">Pandas Sample by Group</a></li><li><a href="#Pandas_Random_Sample_with_Condition" title="Pandas Random Sample with Condition">Pandas Random Sample with Condition</a></li><li><a href="#Using_Pandas_Sample_and_Remove" title="Using Pandas Sample and Remove">Using Pandas Sample and Remove</a></li><li><a href="#Saving_the_Pandas_Sample" title="Saving the Pandas Sample">Saving the Pandas Sample</a></li><li><a href="#Summary" title="Summary">Summary</a></li></ul></nav></div>
+<h2><span class="ez-toc-section" id="How_to_Take_a_Random_Sample_of_Rows">How to Take a Random Sample of Rows</span></h2>
+<p>In this section we are going to learn how to take a random sample of a Pandas dataframe. We are going to use an Excel file that can be downloaded <a href="https://mathcs.org/statistics/datasets/index.html" target="_blank" rel="noopener">here</a>. First, we start by importing Pandas and we use read_excel to load the Excel file into a dataframe:</p>
+<div id="crayon-5bf72a5483a0b945352615" class="crayon-syntax crayon-theme-github crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;">
+<div class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div><span class="crayon-language">Python</span></div></div>
+<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+import pandas as pd
+
+df = pd.read_excel('MLBPlayerSalaries.xlsx')
+df.head()</textarea></div>
+<div class="crayon-main" style="">
+<table class="crayon-table">
+<tr class="crayon-row">
+<td class="crayon-nums " data-settings="show">
+<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-5bf72a5483a0b945352615-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-5bf72a5483a0b945352615-2">2</div><div class="crayon-num" data-line="crayon-5bf72a5483a0b945352615-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-5bf72a5483a0b945352615-4">4</div></div>
+</td>
+<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5bf72a5483a0b945352615-1"><span class="crayon-r">import</span><span class="crayon-h"> </span><span class="crayon-e">pandas </span><span class="crayon-st">as</span><span class="crayon-h"> </span><span class="crayon-e">pd</span></div><div class="crayon-line crayon-striped-line" id="crayon-5bf72a5483a0b945352615-2">&nbsp;</div><div class="crayon-line" id="crayon-5bf72a5483a0b945352615-3"><span class="crayon-v">df</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">pd</span><span class="crayon-sy">.</span><span class="crayon-e">read_excel</span><span class="crayon-sy">(</span><span class="crayon-s">'MLBPlayerSalaries.xlsx'</span><span class="crayon-sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-5bf72a5483a0b945352615-4"><span class="crayon-v">df</span><span class="crayon-sy">.</span><span class="crayon-e">head</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span></div></div></td>
+</tr>
+</table>
+</div>
+</div>
+
+<p><img class="aligncenter size-full wp-image-2563" src="https://www.marsja.se/wp-content/uploads/2018/11/pandas-sample-rows-dataframe.png" alt="" width="460" height="171" srcset="https://www.marsja.se/wp-content/uploads/2018/11/pandas-sample-rows-dataframe.png 460w, https://www.marsja.se/wp-content/uploads/2018/11/pandas-sample-rows-dataframe-300x112.png 300w" sizes="(max-width: 460px) 100vw, 460px" /></p>
+<p>We use the method <a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.shape.html" target="_blank" rel="noopener"><em>shape</em></a> to see how many rows and columns that we have in our dataframe. This method is very similar to the <em>dim</em> function in R statistical programming language (see <a href="https://www.rdocumentation.org/packages/base/versions/3.5.1/topics/dim" target="_blank" rel="noopener">here</a>).</p>
+<div id="crayon-5bf72a5483a16842288013" class="crayon-syntax crayon-theme-github crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;">
+<div class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div><span class="crayon-language">Python</span></div></div>
+<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+df.shape</textarea></div>
+<div class="crayon-main" style="">
+<table class="crayon-table">
+<tr class="crayon-row">
+<td class="crayon-nums " data-settings="show">
+<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-5bf72a5483a16842288013-1">1</div></div>
+</td>
+<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5bf72a5483a16842288013-1"><span class="crayon-v">df</span><span class="crayon-sy">.</span><span class="crayon-v">shape</span></div></div></td>
+</tr>
+</table>
+</div>
+</div>
+
+<p><img class="aligncenter size-full wp-image-2564" src="https://www.marsja.se/wp-content/uploads/2018/11/pandas-dataframe-sample-shape.png" alt="" width="333" height="31" srcset="https://www.marsja.se/wp-content/uploads/2018/11/pandas-dataframe-sample-shape.png 333w, https://www.marsja.se/wp-content/uploads/2018/11/pandas-dataframe-sample-shape-300x28.png 300w" sizes="(max-width: 333px) 100vw, 333px" /></p>
+<ul>
+<li>Read the <a href="https://www.marsja.se/pandas-excel-tutorial-how-to-read-and-write-excel-files/" target="_blank" rel="noopener">Pandas Excel Tutorial</a> to learn more about loading Excel files into Pandas dataframes.</li>
+</ul>
+<p>Now we know how many rows and columns there are (<strong>19543</strong> and <strong>5</strong> rows and columns, respectively) and we will now continue by using Pandas sample. In the example below we are not going to use any parameters. The default behavior, when not using any parameters, is sampling one row:</p>
+<div id="crayon-5bf72a5483a19796524785" class="crayon-syntax crayon-theme-github crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;">
+<div class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div><span class="crayon-language">Python</span></div></div>
+<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+df.sample()</textarea></div>
+<div class="crayon-main" style="">
+<table class="crayon-table">
+<tr class="crayon-row">
+<td class="crayon-nums " data-settings="show">
+<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-5bf72a5483a19796524785-1">1</div></div>
+</td>
+<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5bf72a5483a19796524785-1"><span class="crayon-v">df</span><span class="crayon-sy">.</span><span class="crayon-e">sample</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span></div></div></td>
+</tr>
+</table>
+</div>
+</div>
+
+<p><img class="aligncenter wp-image-2565 size-full" src="https://www.marsja.se/wp-content/uploads/2018/11/sample-pandas-one-random-row.png" alt="one randomly selected row using Pandas sample" width="434" height="62" srcset="https://www.marsja.se/wp-content/uploads/2018/11/sample-pandas-one-random-row.png 434w, https://www.marsja.se/wp-content/uploads/2018/11/sample-pandas-one-random-row-300x43.png 300w" sizes="(max-width: 434px) 100vw, 434px" /></p>
+<p>In the most cases we want to take random samples of more rows than one. Thus, in the next Pandas sample example we are going to take random sample of the size of 200. We are going to use the parameter <em>n</em> to accomplish this:</p>
+<div id="crayon-5bf72a5483a1e184427204" class="crayon-syntax crayon-theme-github crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;">
+<div class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div><span class="crayon-language">Python</span></div></div>
+<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+df.sample(n=200).head(10)</textarea></div>
+<div class="crayon-main" style="">
+<table class="crayon-table">
+<tr class="crayon-row">
+<td class="crayon-nums " data-settings="show">
+<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-5bf72a5483a1e184427204-1">1</div></div>
+</td>
+<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5bf72a5483a1e184427204-1"><span class="crayon-v">df</span><span class="crayon-sy">.</span><span class="crayon-e">sample</span><span class="crayon-sy">(</span><span class="crayon-v">n</span><span class="crayon-o">=</span><span class="crayon-cn">200</span><span class="crayon-sy">)</span><span class="crayon-sy">.</span><span class="crayon-e">head</span><span class="crayon-sy">(</span><span class="crayon-cn">10</span><span class="crayon-sy">)</span></div></div></td>
+</tr>
+</table>
+</div>
+</div>
+
+<p><img class="aligncenter size-full wp-image-2571" src="https://www.marsja.se/wp-content/uploads/2018/11/how-to-sample-pandas-dataframe.png" alt="" width="462" height="314" srcset="https://www.marsja.se/wp-content/uploads/2018/11/how-to-sample-pandas-dataframe.png 462w, https://www.marsja.se/wp-content/uploads/2018/11/how-to-sample-pandas-dataframe-300x204.png 300w" sizes="(max-width: 462px) 100vw, 462px" /></p>
+<p>As can be seen in the above image, we also used the <em>head</em> method to print only the 10 first rows of the randomly sampled rows. In most cases, we may want to save the randomly sampled rows. To accomplish this, we ill create a new dataframe:</p>
+<div id="crayon-5bf72a5483a20816692501" class="crayon-syntax crayon-theme-github crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;">
+<div class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div><span class="crayon-language">Python</span></div></div>
+<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+df200 = df.sample(n=200)
+df200.shape
+# Output: (200, 5)</textarea></div>
+<div class="crayon-main" style="">
+<table class="crayon-table">
+<tr class="crayon-row">
+<td class="crayon-nums " data-settings="show">
+<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-5bf72a5483a20816692501-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-5bf72a5483a20816692501-2">2</div><div class="crayon-num" data-line="crayon-5bf72a5483a20816692501-3">3</div></div>
+</td>
+<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5bf72a5483a20816692501-1"><span class="crayon-v">df200</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">df</span><span class="crayon-sy">.</span><span class="crayon-e">sample</span><span class="crayon-sy">(</span><span class="crayon-v">n</span><span class="crayon-o">=</span><span class="crayon-cn">200</span><span class="crayon-sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-5bf72a5483a20816692501-2"><span class="crayon-v">df200</span><span class="crayon-sy">.</span><span class="crayon-v">shape</span></div><div class="crayon-line" id="crayon-5bf72a5483a20816692501-3"><span class="crayon-c"># Output: (200, 5)</span></div></div></td>
+</tr>
+</table>
+</div>
+</div>
+
+<p>In the code above we created a new dataframe, called df200, with 200 randomly selected rows. Again, we used the method shape to see how many rows (and columns) we now have.</p>
+<h3 id="Random-Sampling-Rows-using-Numpy-Choice"><span class="ez-toc-section" id="Random_Sampling_Rows_using_NumPy_Choice">Random Sampling Rows using NumPy Choice</span></h3>
+<p>It&#8217;s of course very easy and convenient to use Pandas sample method to take a random sample of rows. Note, however, that it&#8217;s possible to use NumPy and <a href="https://het.as.utexas.edu/HET/Software/Numpy/reference/generated/numpy.random.choice.html" target="_blank" rel="noopener"><em>random.choice</em></a>. In the example below we will get the same result as above by using np.random.choice.</p>
+<p>As usual when working with Python modules, we start by importing NumPy. After this is done we will the continue to create an array of indices (<em>rows)</em> and then use Pandas loc method to select the rows based on the random indices:</p>
+<div id="crayon-5bf72a5483a22168522290" class="crayon-syntax crayon-theme-github crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;">
+<div class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div><span class="crayon-language">Python</span></div></div>
+<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+import numpy as np
+
+rows = np.random.choice(df.index.values, 200)
+df200 = df.loc[rows]
+df200.head()</textarea></div>
+<div class="crayon-main" style="">
+<table class="crayon-table">
+<tr class="crayon-row">
+<td class="crayon-nums " data-settings="show">
+<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-5bf72a5483a22168522290-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-5bf72a5483a22168522290-2">2</div><div class="crayon-num" data-line="crayon-5bf72a5483a22168522290-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-5bf72a5483a22168522290-4">4</div><div class="crayon-num" data-line="crayon-5bf72a5483a22168522290-5">5</div></div>
+</td>
+<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5bf72a5483a22168522290-1"><span class="crayon-r">import</span><span class="crayon-h"> </span><span class="crayon-e">numpy </span><span class="crayon-st">as</span><span class="crayon-h"> </span><span class="crayon-e">np</span></div><div class="crayon-line crayon-striped-line" id="crayon-5bf72a5483a22168522290-2">&nbsp;</div><div class="crayon-line" id="crayon-5bf72a5483a22168522290-3"><span class="crayon-v">rows</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">np</span><span class="crayon-sy">.</span><span class="crayon-k ">random</span><span class="crayon-sy">.</span><span class="crayon-e">choice</span><span class="crayon-sy">(</span><span class="crayon-v">df</span><span class="crayon-sy">.</span><span class="crayon-v">index</span><span class="crayon-sy">.</span><span class="crayon-v">values</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-cn">200</span><span class="crayon-sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-5bf72a5483a22168522290-4"><span class="crayon-v">df200</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">df</span><span class="crayon-sy">.</span><span class="crayon-v">loc</span><span class="crayon-sy">[</span><span class="crayon-v">rows</span><span class="crayon-sy">]</span></div><div class="crayon-line" id="crayon-5bf72a5483a22168522290-5"><span class="crayon-v">df200</span><span class="crayon-sy">.</span><span class="crayon-e">head</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span></div></div></td>
+</tr>
+</table>
+</div>
+</div>
+
+<p><img class="aligncenter wp-image-2568 size-full" src="https://www.marsja.se/wp-content/uploads/2018/11/numpy-random-samples-rows-dataframe.png" alt="Using Pandas sample to randomly select 200 rows" width="541" height="174" srcset="https://www.marsja.se/wp-content/uploads/2018/11/numpy-random-samples-rows-dataframe.png 541w, https://www.marsja.se/wp-content/uploads/2018/11/numpy-random-samples-rows-dataframe-300x96.png 300w" sizes="(max-width: 541px) 100vw, 541px" /></p>
+<h2><span class="ez-toc-section" id="How_to_Sample_Pandas_Dataframe_using_frac">How to Sample Pandas Dataframe using frac</span></h2>
+<p>Now that we have used NumPy we will continue this Pandas dataframe sample tutorial by using sample&#8217;s <em>frac</em> parameter. This parameter specifies the fraction (percentage) of rows to return in the random sample. This means that setting frac to 1 (frac=1) will return <strong>all</strong> rows, in random order. That is, if we just want to shuffle the dataframe it can be done using sample and the parameter frac.</p>
+<div id="crayon-5bf72a5483a27246031352" class="crayon-syntax crayon-theme-github crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;">
+<div class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div><span class="crayon-language">Python</span></div></div>
+<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+df.sample(frac=1).head()</textarea></div>
+<div class="crayon-main" style="">
+<table class="crayon-table">
+<tr class="crayon-row">
+<td class="crayon-nums " data-settings="show">
+<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-5bf72a5483a27246031352-1">1</div></div>
+</td>
+<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5bf72a5483a27246031352-1"><span class="crayon-v">df</span><span class="crayon-sy">.</span><span class="crayon-e">sample</span><span class="crayon-sy">(</span><span class="crayon-v">frac</span><span class="crayon-o">=</span><span class="crayon-cn">1</span><span class="crayon-sy">)</span><span class="crayon-sy">.</span><span class="crayon-e">head</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span></div></div></td>
+</tr>
+</table>
+</div>
+</div>
+
+<p><img class="aligncenter wp-image-2572 size-full" src="https://www.marsja.se/wp-content/uploads/2018/11/pandas-sample-percentage-of-dataframe.png" alt="Pandas Sample using the frac parameter" width="514" height="172" srcset="https://www.marsja.se/wp-content/uploads/2018/11/pandas-sample-percentage-of-dataframe.png 514w, https://www.marsja.se/wp-content/uploads/2018/11/pandas-sample-percentage-of-dataframe-300x100.png 300w" sizes="(max-width: 514px) 100vw, 514px" /></p>
+<p>As can be seen in the output table above the order of the rows are now random. We can use shape, again, to see that we have the same amount of rows:</p>
+<div id="crayon-5bf72a5483a29689130695" class="crayon-syntax crayon-theme-github crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;">
+<div class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div><span class="crayon-language">Python</span></div></div>
+<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+df.sample(frac=1).shape
+# Output: (19543, 5)</textarea></div>
+<div class="crayon-main" style="">
+<table class="crayon-table">
+<tr class="crayon-row">
+<td class="crayon-nums " data-settings="show">
+<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-5bf72a5483a29689130695-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-5bf72a5483a29689130695-2">2</div></div>
+</td>
+<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5bf72a5483a29689130695-1"><span class="crayon-v">df</span><span class="crayon-sy">.</span><span class="crayon-e">sample</span><span class="crayon-sy">(</span><span class="crayon-v">frac</span><span class="crayon-o">=</span><span class="crayon-cn">1</span><span class="crayon-sy">)</span><span class="crayon-sy">.</span><span class="crayon-v">shape</span></div><div class="crayon-line crayon-striped-line" id="crayon-5bf72a5483a29689130695-2"><span class="crayon-c"># Output: (19543, 5)</span></div></div></td>
+</tr>
+</table>
+</div>
+</div>
+
+<p>As expected there are as many rows and columns as in the original dataframe.</p>
+<h3><span class="ez-toc-section" id="How_to_Shuffle_Pandas_Dataframe_using_Numpy">How to Shuffle Pandas Dataframe using Numpy</span></h3>
+<p>Here we will use another method to shuffle the dataframe. In the example code below we will use the Python module NumPy again. We have to use <em>reindex </em>(Pandas) and <em>random.permutation</em> (NumPy). More specifically, we will permute the datframe using the indices:</p>
+<div id="crayon-5bf72a5483a2b112471325" class="crayon-syntax crayon-theme-github crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;">
+<div class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div><span class="crayon-language">Python</span></div></div>
+<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+df_shuffled = df.reindex(np.random.permutation(df.index))</textarea></div>
+<div class="crayon-main" style="">
+<table class="crayon-table">
+<tr class="crayon-row">
+<td class="crayon-nums " data-settings="show">
+<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-5bf72a5483a2b112471325-1">1</div></div>
+</td>
+<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5bf72a5483a2b112471325-1"><span class="crayon-v">df_shuffled</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">df</span><span class="crayon-sy">.</span><span class="crayon-e">reindex</span><span class="crayon-sy">(</span><span class="crayon-v">np</span><span class="crayon-sy">.</span><span class="crayon-k ">random</span><span class="crayon-sy">.</span><span class="crayon-e">permutation</span><span class="crayon-sy">(</span><span class="crayon-v">df</span><span class="crayon-sy">.</span><span class="crayon-v">index</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span></div></div></td>
+</tr>
+</table>
+</div>
+</div>
+
+<p>We can use frac to get 200 randomly selected rows also. Before doing this we will, of course, need to calculate how many % 200 is of our total amount of rows. In this case it&#8217;s approximately 1% of the data and using the code below will also give us 200 random rows from the dataframe.</p>
+<div id="crayon-5bf72a5483a2d879418049" class="crayon-syntax crayon-theme-github crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;">
+<div class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div><span class="crayon-language">Python</span></div></div>
+<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+df200 = df.sample(frac=.01023)</textarea></div>
+<div class="crayon-main" style="">
+<table class="crayon-table">
+<tr class="crayon-row">
+<td class="crayon-nums " data-settings="show">
+<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-5bf72a5483a2d879418049-1">1</div></div>
+</td>
+<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5bf72a5483a2d879418049-1"><span class="crayon-v">df200</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">df</span><span class="crayon-sy">.</span><span class="crayon-e">sample</span><span class="crayon-sy">(</span><span class="crayon-v">frac</span><span class="crayon-o">=</span><span class="crayon-sy">.</span><span class="crayon-cn">01023</span><span class="crayon-sy">)</span></div></div></td>
+</tr>
+</table>
+</div>
+</div>
+
+<p>Note, the frac parameter cannot be used together with n. We will get a <em>ValueError</em> that states that we cannot enter a value for both frac and n.</p>
+<h2><span class="ez-toc-section" id="Pandas_Sample_with_Replacement">Pandas Sample with Replacement</span></h2>
+<p>We can also, of course, sample with replacement. By default Pandas sample will sample <em>without</em> replacement. In some cases we have to sample with replacement (e.g., with really large datasets). If we want to sample with replacement we should use the <em>replace</em> parameter:</p>
+<div id="crayon-5bf72a5483a2f284099636" class="crayon-syntax crayon-theme-github crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;">
+<div class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div><span class="crayon-language">Python</span></div></div>
+<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+df5 = df.sample(n=5, replace=True)</textarea></div>
+<div class="crayon-main" style="">
+<table class="crayon-table">
+<tr class="crayon-row">
+<td class="crayon-nums " data-settings="show">
+<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-5bf72a5483a2f284099636-1">1</div></div>
+</td>
+<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5bf72a5483a2f284099636-1"><span class="crayon-v">df5</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">df</span><span class="crayon-sy">.</span><span class="crayon-e">sample</span><span class="crayon-sy">(</span><span class="crayon-v">n</span><span class="crayon-o">=</span><span class="crayon-cn">5</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">replace</span><span class="crayon-o">=</span><span class="crayon-t">True</span><span class="crayon-sy">)</span></div></div></td>
+</tr>
+</table>
+</div>
+</div>
+
+<p></p>
+<h2><span class="ez-toc-section" id="Sample_Dataframe_with_Seed">Sample Dataframe with Seed</span></h2>
+<p>If we want to be able to reproduce our random sample of rows we can use the random_state parameter. This is the seed for the random number generator and we need to input an integer:</p>
+<div id="crayon-5bf72a5483a31094274896" class="crayon-syntax crayon-theme-github crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;">
+<div class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div><span class="crayon-language">Python</span></div></div>
+<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+df200 = df.sample(n=200, random_state=1111)</textarea></div>
+<div class="crayon-main" style="">
+<table class="crayon-table">
+<tr class="crayon-row">
+<td class="crayon-nums " data-settings="show">
+<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-5bf72a5483a31094274896-1">1</div></div>
+</td>
+<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5bf72a5483a31094274896-1"><span class="crayon-v">df200</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">df</span><span class="crayon-sy">.</span><span class="crayon-e">sample</span><span class="crayon-sy">(</span><span class="crayon-v">n</span><span class="crayon-o">=</span><span class="crayon-cn">200</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">random_state</span><span class="crayon-o">=</span><span class="crayon-cn">1111</span><span class="crayon-sy">)</span></div></div></td>
+</tr>
+</table>
+</div>
+</div>
+
+<p>We can, of course, use both the parameters frac and random_state, or n and random_state, together. In the example below we randomly select 50% of the rows and use the random_state. It is further possible to use replace=True parameter together with frac and random_state to get a reproducible percentage of rows with replacement.</p>
+<div id="crayon-5bf72a5483a33360619745" class="crayon-syntax crayon-theme-github crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;">
+<div class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div><span class="crayon-language">Python</span></div></div>
+<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+df200 = df.sample(frac=.5, replace=True, random_state=1111)</textarea></div>
+<div class="crayon-main" style="">
+<table class="crayon-table">
+<tr class="crayon-row">
+<td class="crayon-nums " data-settings="show">
+<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-5bf72a5483a33360619745-1">1</div></div>
+</td>
+<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5bf72a5483a33360619745-1"><span class="crayon-v">df200</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">df</span><span class="crayon-sy">.</span><span class="crayon-e">sample</span><span class="crayon-sy">(</span><span class="crayon-v">frac</span><span class="crayon-o">=</span><span class="crayon-sy">.</span><span class="crayon-cn">5</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">replace</span><span class="crayon-o">=</span><span class="crayon-t">True</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">random_state</span><span class="crayon-o">=</span><span class="crayon-cn">1111</span><span class="crayon-sy">)</span></div></div></td>
+</tr>
+</table>
+</div>
+</div>
+
+<p></p>
+<h2><img class="aligncenter wp-image-2573 size-medium_large" src="https://www.marsja.se/wp-content/uploads/2018/11/pandas-sample-to-dataframe-768x195.png" alt="frac and n cannot be used together when using Pandas sample" width="768" height="195" srcset="https://www.marsja.se/wp-content/uploads/2018/11/pandas-sample-to-dataframe-768x195.png 768w, https://www.marsja.se/wp-content/uploads/2018/11/pandas-sample-to-dataframe-300x76.png 300w, https://www.marsja.se/wp-content/uploads/2018/11/pandas-sample-to-dataframe-640x162.png 640w, https://www.marsja.se/wp-content/uploads/2018/11/pandas-sample-to-dataframe.png 977w" sizes="(max-width: 768px) 100vw, 768px" /></h2>
+<h2><span class="ez-toc-section" id="Pandas_Sample_with_Weights">Pandas Sample with Weights</span></h2>
+<p>The sample method also have the parameter <em>weights</em> and this can be used if we want to <strong>increase </strong>the probability for certain rows to be sampled. We start of the next Pandas sample example by importing NumPy.</p>
+<div id="crayon-5bf72a5483a37312218694" class="crayon-syntax crayon-theme-github crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;">
+<div class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div><span class="crayon-language">Python</span></div></div>
+<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+import numpy as np
+
+df['Weights'] = np.where(df['Year'] &lt;= 2000, .75, .25)
+df['Weights'].unique()
+
+# Output: array([0.75 , 0.25])</textarea></div>
+<div class="crayon-main" style="">
+<table class="crayon-table">
+<tr class="crayon-row">
+<td class="crayon-nums " data-settings="show">
+<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-5bf72a5483a37312218694-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-5bf72a5483a37312218694-2">2</div><div class="crayon-num" data-line="crayon-5bf72a5483a37312218694-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-5bf72a5483a37312218694-4">4</div><div class="crayon-num" data-line="crayon-5bf72a5483a37312218694-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-5bf72a5483a37312218694-6">6</div></div>
+</td>
+<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5bf72a5483a37312218694-1"><span class="crayon-r">import</span><span class="crayon-h"> </span><span class="crayon-e">numpy </span><span class="crayon-st">as</span><span class="crayon-h"> </span><span class="crayon-e">np</span></div><div class="crayon-line crayon-striped-line" id="crayon-5bf72a5483a37312218694-2">&nbsp;</div><div class="crayon-line" id="crayon-5bf72a5483a37312218694-3"><span class="crayon-v">df</span><span class="crayon-sy">[</span><span class="crayon-s">'Weights'</span><span class="crayon-sy">]</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">np</span><span class="crayon-sy">.</span><span class="crayon-e">where</span><span class="crayon-sy">(</span><span class="crayon-v">df</span><span class="crayon-sy">[</span><span class="crayon-s">'Year'</span><span class="crayon-sy">]</span><span class="crayon-h"> </span><span class="crayon-o">&lt;=</span><span class="crayon-h"> </span><span class="crayon-cn">2000</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-sy">.</span><span class="crayon-cn">75</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-sy">.</span><span class="crayon-cn">25</span><span class="crayon-sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-5bf72a5483a37312218694-4"><span class="crayon-v">df</span><span class="crayon-sy">[</span><span class="crayon-s">'Weights'</span><span class="crayon-sy">]</span><span class="crayon-sy">.</span><span class="crayon-e">unique</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span></div><div class="crayon-line" id="crayon-5bf72a5483a37312218694-5">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-5bf72a5483a37312218694-6"><span class="crayon-c"># Output: array([0.75 , 0.25])</span></div></div></td>
+</tr>
+</table>
+</div>
+</div>
+
+<p>In the code above we used NumPy&#8217;s <em>where</em> to create a new column &#8216;Weights&#8217;. Up until the year 2000 the weights are .5. This will increase the probability for Pandas sample to select rows up until this year:</p>
+<div id="crayon-5bf72a5483a3a208366316" class="crayon-syntax crayon-theme-github crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;">
+<div class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div><span class="crayon-language">Python</span></div></div>
+<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+df2 = df.sample(frac=.5, random_state=1111, weights='Weights')
+df2.shape
+
+# Output: (9772, 6)</textarea></div>
+<div class="crayon-main" style="">
+<table class="crayon-table">
+<tr class="crayon-row">
+<td class="crayon-nums " data-settings="show">
+<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-5bf72a5483a3a208366316-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-5bf72a5483a3a208366316-2">2</div><div class="crayon-num" data-line="crayon-5bf72a5483a3a208366316-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-5bf72a5483a3a208366316-4">4</div></div>
+</td>
+<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5bf72a5483a3a208366316-1"><span class="crayon-v">df2</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">df</span><span class="crayon-sy">.</span><span class="crayon-e">sample</span><span class="crayon-sy">(</span><span class="crayon-v">frac</span><span class="crayon-o">=</span><span class="crayon-sy">.</span><span class="crayon-cn">5</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">random_state</span><span class="crayon-o">=</span><span class="crayon-cn">1111</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">weights</span><span class="crayon-o">=</span><span class="crayon-s">'Weights'</span><span class="crayon-sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-5bf72a5483a3a208366316-2"><span class="crayon-v">df2</span><span class="crayon-sy">.</span><span class="crayon-v">shape</span></div><div class="crayon-line" id="crayon-5bf72a5483a3a208366316-3">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-5bf72a5483a3a208366316-4"><span class="crayon-c"># Output: (9772, 6)</span></div></div></td>
+</tr>
+</table>
+</div>
+</div>
+
+<p></p>
+<h2><span class="ez-toc-section" id="Pandas_Sample_by_Group">Pandas Sample by Group</span></h2>
+<p>It&#8217;s also possible to sample each group after we have used Pandas <em>groupby</em> method. In the example below we are going to group the dataframe by player and then take 2 samples of data from each player:</p>
+<div id="crayon-5bf72a5483a46324808133" class="crayon-syntax crayon-theme-github crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;">
+<div class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div><span class="crayon-language">Python</span></div></div>
+<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+grouped = df.groupby('Player')
+grouped.apply(lambda x: x.sample(n=2, replace=True)).head()</textarea></div>
+<div class="crayon-main" style="">
+<table class="crayon-table">
+<tr class="crayon-row">
+<td class="crayon-nums " data-settings="show">
+<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-5bf72a5483a46324808133-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-5bf72a5483a46324808133-2">2</div></div>
+</td>
+<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5bf72a5483a46324808133-1"><span class="crayon-v">grouped</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">df</span><span class="crayon-sy">.</span><span class="crayon-e">groupby</span><span class="crayon-sy">(</span><span class="crayon-s">'Player'</span><span class="crayon-sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-5bf72a5483a46324808133-2"><span class="crayon-v">grouped</span><span class="crayon-sy">.</span><span class="crayon-k ">apply</span><span class="crayon-sy">(</span><span class="crayon-r">lambda</span><span class="crayon-h"> </span><span class="crayon-v">x</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-v">x</span><span class="crayon-sy">.</span><span class="crayon-e">sample</span><span class="crayon-sy">(</span><span class="crayon-v">n</span><span class="crayon-o">=</span><span class="crayon-cn">2</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">replace</span><span class="crayon-o">=</span><span class="crayon-t">True</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span><span class="crayon-sy">.</span><span class="crayon-e">head</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span></div></div></td>
+</tr>
+</table>
+</div>
+</div>
+
+<p><img class="aligncenter wp-image-2567 size-full" src="https://www.marsja.se/wp-content/uploads/2018/11/pandas-sample-by-group-groupby.png" alt="Pandas sample by group (player)" width="508" height="202" srcset="https://www.marsja.se/wp-content/uploads/2018/11/pandas-sample-by-group-groupby.png 508w, https://www.marsja.se/wp-content/uploads/2018/11/pandas-sample-by-group-groupby-300x119.png 300w" sizes="(max-width: 508px) 100vw, 508px" /></p>
+<p>The code above may need some clarification. In the second line, we used Pandas <em><a href="https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.apply.html" target="_blank" rel="noopener">apply method</a> </em>and the anonymous Python function <em>lambda</em>. What it will do is run sample on each subset (i.e., for each Player) and take 2 random rows. Note, here we have to use replace=True or else it won&#8217;t work.</p>
+<h2><span class="ez-toc-section" id="Pandas_Random_Sample_with_Condition">Pandas Random Sample with Condition</span></h2>
+<p>Say that we want to take a random sample of players with a salary under 421000 (or rows when the salary is under this number. Could be certain years for some players. This is quite easy, in the example below we sample 10% of the dataframe based on this condition.</p>
+<div id="crayon-5bf72a5483a48601737968" class="crayon-syntax crayon-theme-github crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;">
+<div class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div><span class="crayon-language">Python</span></div></div>
+<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+df[df['Salary'] &lt; 421000].sample(frac=.1).head()</textarea></div>
+<div class="crayon-main" style="">
+<table class="crayon-table">
+<tr class="crayon-row">
+<td class="crayon-nums " data-settings="show">
+<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-5bf72a5483a48601737968-1">1</div></div>
+</td>
+<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5bf72a5483a48601737968-1"><span class="crayon-v">df</span><span class="crayon-sy">[</span><span class="crayon-v">df</span><span class="crayon-sy">[</span><span class="crayon-s">'Salary'</span><span class="crayon-sy">]</span><span class="crayon-h"> </span><span class="crayon-o">&lt;</span><span class="crayon-h"> </span><span class="crayon-cn">421000</span><span class="crayon-sy">]</span><span class="crayon-sy">.</span><span class="crayon-e">sample</span><span class="crayon-sy">(</span><span class="crayon-v">frac</span><span class="crayon-o">=</span><span class="crayon-sy">.</span><span class="crayon-cn">1</span><span class="crayon-sy">)</span><span class="crayon-sy">.</span><span class="crayon-e">head</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span></div></div></td>
+</tr>
+</table>
+</div>
+</div>
+
+<p><img class="aligncenter wp-image-2575 size-full" src="https://www.marsja.se/wp-content/uploads/2018/11/how-to-sample-pandas-dataframe-with-condition.png" alt="Pandas sample random selecting columns" width="127" height="175" /></p>
+<p>It&#8217;s also possible to have more than one condition. We just have to add some code to the above example. Now we are going to sample salaries under 421000 and prior to the year 2000:</p>
+<div id="crayon-5bf72a5483a4a893566020" class="crayon-syntax crayon-theme-github crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;">
+<div class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div><span class="crayon-language">Python</span></div></div>
+<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+df[(df['Salary'] &lt; 421000) &amp; (df['Year'] &lt; 2000)].sample(frac=.1).head()</textarea></div>
+<div class="crayon-main" style="">
+<table class="crayon-table">
+<tr class="crayon-row">
+<td class="crayon-nums " data-settings="show">
+<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-5bf72a5483a4a893566020-1">1</div></div>
+</td>
+<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5bf72a5483a4a893566020-1"><span class="crayon-v">df</span><span class="crayon-sy">[</span><span class="crayon-sy">(</span><span class="crayon-v">df</span><span class="crayon-sy">[</span><span class="crayon-s">'Salary'</span><span class="crayon-sy">]</span><span class="crayon-h"> </span><span class="crayon-o">&lt;</span><span class="crayon-h"> </span><span class="crayon-cn">421000</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-o">&amp;</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-v">df</span><span class="crayon-sy">[</span><span class="crayon-s">'Year'</span><span class="crayon-sy">]</span><span class="crayon-h"> </span><span class="crayon-o">&lt;</span><span class="crayon-h"> </span><span class="crayon-cn">2000</span><span class="crayon-sy">)</span><span class="crayon-sy">]</span><span class="crayon-sy">.</span><span class="crayon-e">sample</span><span class="crayon-sy">(</span><span class="crayon-v">frac</span><span class="crayon-o">=</span><span class="crayon-sy">.</span><span class="crayon-cn">1</span><span class="crayon-sy">)</span><span class="crayon-sy">.</span><span class="crayon-e">head</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span></div></div></td>
+</tr>
+</table>
+</div>
+</div>
+
+<p></p>
+<h2><img class="aligncenter wp-image-2576 size-full" src="https://www.marsja.se/wp-content/uploads/2018/11/pandas-sample-with-multiple-conditions.png" alt="Sample Pandas dataframe by conditions" width="187" height="87" /></h2>
+<h2><span class="ez-toc-section" id="Using_Pandas_Sample_and_Remove">Using Pandas Sample and Remove</span></h2>
+<p>We may want to take a random sample from our dataframe and remove those rows. Maybe we want to create two different dataframes; one with 80% of the rows and one with the remaining 20%. Both of these things can, of course, be done using sample and the drop method. In the code example below we create two new dataframes; one with 80% of the rows and one with the remaining 20%.</p>
+<div id="crayon-5bf72a5483a4c295941826" class="crayon-syntax crayon-theme-github crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;">
+<div class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div><span class="crayon-language">Python</span></div></div>
+<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+df1 = df.sample(frac=0.8, random_state=138)
+df2 = df.drop(df1.index)</textarea></div>
+<div class="crayon-main" style="">
+<table class="crayon-table">
+<tr class="crayon-row">
+<td class="crayon-nums " data-settings="show">
+<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-5bf72a5483a4c295941826-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-5bf72a5483a4c295941826-2">2</div></div>
+</td>
+<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5bf72a5483a4c295941826-1"><span class="crayon-v">df1</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">df</span><span class="crayon-sy">.</span><span class="crayon-e">sample</span><span class="crayon-sy">(</span><span class="crayon-v">frac</span><span class="crayon-o">=</span><span class="crayon-cn">0.8</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">random_state</span><span class="crayon-o">=</span><span class="crayon-cn">138</span><span class="crayon-sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-5bf72a5483a4c295941826-2"><span class="crayon-v">df2</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">df</span><span class="crayon-sy">.</span><span class="crayon-e">drop</span><span class="crayon-sy">(</span><span class="crayon-v">df1</span><span class="crayon-sy">.</span><span class="crayon-v">index</span><span class="crayon-sy">)</span></div></div></td>
+</tr>
+</table>
+</div>
+</div>
+
+<p>If we merely want to remove random rows we can use drop and the inplace parameter:</p>
+<div id="crayon-5bf72a5483a4e530060771" class="crayon-syntax crayon-theme-github crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;">
+<div class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div><span class="crayon-language">Python</span></div></div>
+<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+df.drop(df1.index, inplace=True)
+df.shape
+
+# Same as: df.drop(df.sample(frac=0.8, random_state=138).index, 
+                             inplace=True)
+# Output: (3909, 5)</textarea></div>
+<div class="crayon-main" style="">
+<table class="crayon-table">
+<tr class="crayon-row">
+<td class="crayon-nums " data-settings="show">
+<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-5bf72a5483a4e530060771-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-5bf72a5483a4e530060771-2">2</div><div class="crayon-num" data-line="crayon-5bf72a5483a4e530060771-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-5bf72a5483a4e530060771-4">4</div><div class="crayon-num" data-line="crayon-5bf72a5483a4e530060771-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-5bf72a5483a4e530060771-6">6</div></div>
+</td>
+<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5bf72a5483a4e530060771-1"><span class="crayon-v">df</span><span class="crayon-sy">.</span><span class="crayon-e">drop</span><span class="crayon-sy">(</span><span class="crayon-v">df1</span><span class="crayon-sy">.</span><span class="crayon-v">index</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">inplace</span><span class="crayon-o">=</span><span class="crayon-t">True</span><span class="crayon-sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-5bf72a5483a4e530060771-2"><span class="crayon-v">df</span><span class="crayon-sy">.</span><span class="crayon-v">shape</span></div><div class="crayon-line" id="crayon-5bf72a5483a4e530060771-3">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-5bf72a5483a4e530060771-4"><span class="crayon-c"># Same as: df.drop(df.sample(frac=0.8, random_state=138).index, </span></div><div class="crayon-line" id="crayon-5bf72a5483a4e530060771-5"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="crayon-v">inplace</span><span class="crayon-o">=</span><span class="crayon-t">True</span><span class="crayon-sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-5bf72a5483a4e530060771-6"><span class="crayon-c"># Output: (3909, 5)</span></div></div></td>
+</tr>
+</table>
+</div>
+</div>
+
+<p><strong>More useful Pandas guides:</strong></p>
+<ul>
+<li><a href="https://www.marsja.se/pandas-dataframe-read-csv-excel-subset/" target="_blank" rel="noopener">Pandas dataframe tutorial</a>.</li>
+<li><a href="https://www.marsja.se/data-manipulation-pandas-tutorial/" target="_blank" rel="noopener">Data manipulation with Pandas</a></li>
+</ul>
+<h2><span class="ez-toc-section" id="Saving_the_Pandas_Sample">Saving the Pandas Sample</span></h2>
+<p>Finally, we may also want to save the to work on later. In the example code below we are going to save a Pandas sample to csv. To accomplish this we use the <em>to_csv</em> method. The first parameter is the filename and because we don&#8217;t want an index column in the file, we use <em>index_col</em>=False.</p>
+<div id="crayon-5bf72a5483a54714402382" class="crayon-syntax crayon-theme-github crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important;">
+<div class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div><span class="crayon-language">Python</span></div></div>
+<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+import pandas as pd
+
+df = pd.read_excel('MLBPlayerSalaries.xlsx')
+
+df.sample(200, random_state=1111).to_csv('MBPlayerSalaries200Sample.csv', 
+                                         index_col=False)</textarea></div>
+<div class="crayon-main" style="">
+<table class="crayon-table">
+<tr class="crayon-row">
+<td class="crayon-nums " data-settings="show">
+<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-5bf72a5483a54714402382-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-5bf72a5483a54714402382-2">2</div><div class="crayon-num" data-line="crayon-5bf72a5483a54714402382-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-5bf72a5483a54714402382-4">4</div><div class="crayon-num" data-line="crayon-5bf72a5483a54714402382-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-5bf72a5483a54714402382-6">6</div></div>
+</td>
+<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-5bf72a5483a54714402382-1"><span class="crayon-r">import</span><span class="crayon-h"> </span><span class="crayon-e">pandas </span><span class="crayon-st">as</span><span class="crayon-h"> </span><span class="crayon-e">pd</span></div><div class="crayon-line crayon-striped-line" id="crayon-5bf72a5483a54714402382-2">&nbsp;</div><div class="crayon-line" id="crayon-5bf72a5483a54714402382-3"><span class="crayon-v">df</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">pd</span><span class="crayon-sy">.</span><span class="crayon-e">read_excel</span><span class="crayon-sy">(</span><span class="crayon-s">'MLBPlayerSalaries.xlsx'</span><span class="crayon-sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-5bf72a5483a54714402382-4">&nbsp;</div><div class="crayon-line" id="crayon-5bf72a5483a54714402382-5"><span class="crayon-v">df</span><span class="crayon-sy">.</span><span class="crayon-e">sample</span><span class="crayon-sy">(</span><span class="crayon-cn">200</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">random_state</span><span class="crayon-o">=</span><span class="crayon-cn">1111</span><span class="crayon-sy">)</span><span class="crayon-sy">.</span><span class="crayon-e">to_csv</span><span class="crayon-sy">(</span><span class="crayon-s">'MBPlayerSalaries200Sample.csv'</span><span class="crayon-sy">,</span><span class="crayon-h"> </span></div><div class="crayon-line crayon-striped-line" id="crayon-5bf72a5483a54714402382-6"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="crayon-v">index_col</span><span class="crayon-o">=</span><span class="crayon-t">False</span><span class="crayon-sy">)</span></div></div></td>
+</tr>
+</table>
+</div>
+</div>
+
+<p></p>
+<h2><span class="ez-toc-section" id="Summary">Summary</span></h2>
+<p>In this brief Pandas tutorial we have learned how to use the sample method. More specifically, we have learned how to:</p>
+<ol>
+<li>take a random sample of a data using the n (a number of rows) and frac (a percentage of rows) parameters,</li>
+<li>get reproducible results using a seed (random_state),</li>
+<li>sample by group, sample using weights, and sample with conditions</li>
+<li>create two samples and deleting random rows</li>
+<li>saving the Pandas sample</li>
+</ol>
+<p>That was it! Now we should know how to use Pandas sample.</p>
+<div class='shareaholic-canvas' data-app='share_buttons' data-title='How to use Pandas Sample to Select Rows and Columns' data-link='https://www.marsja.se/pandas-sample-randomly-select-rows/' data-app-id='27344149' data-app-id-name='post_below_content'></div><div class='shareaholic-canvas' data-app='recommendations' data-title='How to use Pandas Sample to Select Rows and Columns' data-link='https://www.marsja.se/pandas-sample-randomly-select-rows/' data-app-id='27344157' data-app-id-name='post_below_content'></div>
+<div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-icon-text sd-sharing"><h3 class="sd-title">Share this:</h3><div class="sd-content"><ul><li><a href="#" class="sharing-anchor sd-button share-more"><span>Share</span></a></li><li class="share-end"></li></ul><div class="sharing-hidden"><div class="inner" style="display: none;"><ul><li class="share-twitter"><a rel="nofollow noopener noreferrer" data-shared="sharing-twitter-2561" class="share-twitter sd-button share-icon" href="https://www.marsja.se/pandas-sample-randomly-select-rows/?share=twitter" target="_blank" title="Click to share on Twitter"><span>Twitter</span></a></li><li class="share-reddit"><a rel="nofollow noopener noreferrer" data-shared="" class="share-reddit sd-button share-icon" href="https://www.marsja.se/pandas-sample-randomly-select-rows/?share=reddit" target="_blank" title="Click to share on Reddit"><span>Reddit</span></a></li><li class="share-end"></li><li class="share-email"><a rel="nofollow noopener noreferrer" data-shared="" class="share-email sd-button share-icon" href="https://www.marsja.se/pandas-sample-randomly-select-rows/?share=email" target="_blank" title="Click to email this to a friend"><span>Email</span></a></li><li class="share-tumblr"><a rel="nofollow noopener noreferrer" data-shared="" class="share-tumblr sd-button share-icon" href="https://www.marsja.se/pandas-sample-randomly-select-rows/?share=tumblr" target="_blank" title="Click to share on Tumblr"><span>Tumblr</span></a></li><li class="share-end"></li><li class="share-linkedin"><a rel="nofollow noopener noreferrer" data-shared="sharing-linkedin-2561" class="share-linkedin sd-button share-icon" href="https://www.marsja.se/pandas-sample-randomly-select-rows/?share=linkedin" target="_blank" title="Click to share on LinkedIn"><span>LinkedIn</span></a></li><li class="share-facebook"><a rel="nofollow noopener noreferrer" data-shared="sharing-facebook-2561" class="share-facebook sd-button share-icon" href="https://www.marsja.se/pandas-sample-randomly-select-rows/?share=facebook" target="_blank" title="Click to share on Facebook"><span>Facebook</span></a></li><li class="share-end"></li><li class="share-pinterest"><a rel="nofollow noopener noreferrer" data-shared="sharing-pinterest-2561" class="share-pinterest sd-button share-icon" href="https://www.marsja.se/pandas-sample-randomly-select-rows/?share=pinterest" target="_blank" title="Click to share on Pinterest"><span>Pinterest</span></a></li><li class="share-print"><a rel="nofollow noopener noreferrer" data-shared="" class="share-print sd-button share-icon" href="https://www.marsja.se/pandas-sample-randomly-select-rows/#print" target="_blank" title="Click to print"><span>Print</span></a></li><li class="share-end"></li><li class="share-end"></li></ul></div></div></div></div></div><div class='sharedaddy sd-block sd-like jetpack-likes-widget-wrapper jetpack-likes-widget-unloaded' id='like-post-wrapper-76663462-2561-5bf72a5492e5a' data-src='https://widgets.wp.com/likes/#blog_id=76663462&amp;post_id=2561&amp;origin=www.marsja.se&amp;obj_id=76663462-2561-5bf72a5492e5a' data-name='like-post-frame-76663462-2561-5bf72a5492e5a'><h3 class="sd-title">Like this:</h3><div class='likes-widget-placeholder post-likes-widget-placeholder' style='height: 55px;'><span class='button'><span>Like</span></span> <span class="loading">Loading...</span></div><span class='sd-text-color'></span><a class='sd-link-color'></a></div>
+</div>
+<footer class="entry-footer">
+<div class="entry-meta">
+<p class="tags">Tagged as: <a href="https://www.marsja.se/tag/numpy/" rel="tag">Numpy</a>, <a href="https://www.marsja.se/tag/pandas/" rel="tag">Pandas</a>, <a href="https://www.marsja.se/tag/rows/" rel="tag">Rows</a>, <a href="https://www.marsja.se/tag/sample/" rel="tag">Sample</a>, <a href="https://www.marsja.se/tag/selecting/" rel="tag">Selecting</a>, <a href="https://www.marsja.se/tag/subset/" rel="tag">Subset</a></p>
+<p class="categories">Categorized in&#058; <a href="https://www.marsja.se/category/programming/" rel="category tag">Programming</a>, <a href="https://www.marsja.se/category/programming/python/" rel="category tag">Python</a></p>
+</div>
+</footer>
+</article>
+<nav class="navigation post-navigation" role="navigation">
+<h2 class="screen-reader-text">Post navigation</h2>
+<div class="nav-links"><div class="nav-previous"><a href="https://www.marsja.se/pandas-excel-tutorial-how-to-read-and-write-excel-files/" rel="prev">Pandas Excel Tutorial: How to Read and Write Excel files</a></div></div>
+</nav>
+<div id="comments" class="comments-area">
+<div id="respond" class="comment-respond">
+<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="/pandas-sample-randomly-select-rows/#respond" style="display:none;">Cancel reply</a></small></h3> <form action="https://www.marsja.se/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate>
+<p class="comment-notes"><span id="email-notes">Your email address will not be published.</span> Required fields are marked <span class="required">*</span></p><p class="comment-form-comment"><label for="comment">Comment</label> <textarea id="comment" name="comment" cols="45" rows="8" maxlength="65525" required="required"></textarea></p><p class="comment-form-author"><label for="author">Name <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" maxlength="245" required='required' /></p>
+<p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="email" type="email" value="" size="30" maxlength="100" aria-describedby="email-notes" required='required' /></p>
+<p class="comment-form-url"><label for="url">Website</label> <input id="url" name="url" type="url" value="" size="30" maxlength="200" /></p>
+<p class="comment-subscription-form"><input type="checkbox" name="subscribe_comments" id="subscribe_comments" value="subscribe" style="width: auto; -moz-appearance: checkbox; -webkit-appearance: checkbox;" /> <label class="subscribe-label" id="subscribe-label" for="subscribe_comments">Notify me of follow-up comments by email.</label></p><p class="comment-subscription-form"><input type="checkbox" name="subscribe_blog" id="subscribe_blog" value="subscribe" style="width: auto; -moz-appearance: checkbox; -webkit-appearance: checkbox;" /> <label class="subscribe-label" id="subscribe-blog-label" for="subscribe_blog">Notify me of new posts by email.</label></p><div class="gglcptch gglcptch_v2"><div id="gglcptch_recaptcha_1783122182" class="gglcptch_recaptcha"></div>
+<noscript>
+					<div style="width: 302px;">
+						<div style="width: 302px; height: 422px; position: relative;">
+							<div style="width: 302px; height: 422px; position: absolute;">
+								<iframe src="https://www.google.com/recaptcha/api/fallback?k=6LdoFnsUAAAAADqvAMcAZ4fUfpS9R-kDoTztEeEK" frameborder="0" scrolling="no" style="width: 302px; height:422px; border-style: none;"></iframe>
+							</div>
+						</div>
+						<div style="border-style: none; bottom: 12px; left: 25px; margin: 0px; padding: 0px; right: 25px; background: #f9f9f9; border: 1px solid #c1c1c1; border-radius: 3px; height: 60px; width: 300px;">
+							<textarea id="g-recaptcha-response" name="g-recaptcha-response" class="g-recaptcha-response" style="width: 250px !important; height: 40px !important; border: 1px solid #c1c1c1 !important; margin: 10px 25px !important; padding: 0px !important; resize: none !important;"></textarea>
+						</div>
+					</div>
+				</noscript></div><p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Post Comment" /> <input type='hidden' name='comment_post_ID' value='2561' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+</p><p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="bfd15e0d27" /></p><p style="display: none;"><input type="hidden" id="ak_js" name="ak_js" value="44" /></p> </form>
+</div>
+<p class="akismet_comment_form_privacy_notice">This site uses Akismet to reduce spam. <a href="https://akismet.com/privacy/" target="_blank" rel="nofollow noopener">Learn how your comment data is processed</a>.</p>
+</div>
+</main>
+</div>
+</div>
+<footer id="colophon" class="site-footer" role="contentinfo">
+</footer>
+</div>
+<div id="sidebar" class="sidebar left">
+<div id="sidebar-top" class="sidebar-top SidebarTop clearfix">
+<button id="sidebar-close" class="sidebar-close SidebarClose" title="Hide sidebar">
+<svg width="100%" height="100%" viewBox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg">
+<path class="close-icon" d="M0,172.881356 L72.8813559,100 L1.0658141e-14,27.1186441 L27.1186441,-2.84217094e-14 L100,72.8813559 L172.881356,0 L200,27.1186441 L127.118644,100 L200,172.881356 L172.881356,200 L100,127.118644 L27.1186441,200 Z M0,172.881356" fill="#444444"></path>
+</svg>
+</button>
+</div>
+<div class="sidebar-content">
+<div class="widget-area" role="complementary">
+<aside id="search-2" class="widget widget_search"><form role="search" method="get" class="search-form" action="https://www.marsja.se/">
+<label>
+<span class="screen-reader-text">Search for:</span>
+<input type="search" class="search-field" placeholder="Search &hellip;" value="" name="s" />
+</label>
+<input type="submit" class="search-submit" value="Search" />
+</form></aside> <aside id="recent-posts-2" class="widget widget_recent_entries"> <h2 class="widgettitle">Recent Posts</h2>
+<ul>
+<li>
+<a href="https://www.marsja.se/pandas-sample-randomly-select-rows/">How to use Pandas Sample to Select Rows and Columns</a>
+</li>
+<li>
+<a href="https://www.marsja.se/pandas-excel-tutorial-how-to-read-and-write-excel-files/">Pandas Excel Tutorial: How to Read and Write Excel files</a>
+</li>
+<li>
+<a href="https://www.marsja.se/data-manipulation-pandas-tutorial/">Data Manipulation with Pandas: A Brief Tutorial</a>
+</li>
+<li>
+<a href="https://www.marsja.se/repeated-measures-anova-in-python-using-statsmodels/">Repeated Measures ANOVA in Python using Statsmodels</a>
+</li>
+<li>
+<a href="https://www.marsja.se/pandas-dataframe-read-csv-excel-subset/">A Basic Pandas Dataframe Tutorial for Beginners</a>
+</li>
+</ul>
+</aside><aside id="recent-comments-2" class="widget widget_recent_comments"><h2 class="widgettitle">Recent Comments</h2>
+<ul id="recentcomments"><li class="recentcomments"><span class="comment-author-link"><a href="https://www.marsja.se" rel='external nofollow' class='url'>Erik Marsja</a></span> on <a href="https://www.marsja.se/pandas-excel-tutorial-how-to-read-and-write-excel-files/#comment-14990">Pandas Excel Tutorial: How to Read and Write Excel files</a></li><li class="recentcomments"><span class="comment-author-link">Christian</span> on <a href="https://www.marsja.se/pandas-excel-tutorial-how-to-read-and-write-excel-files/#comment-14986">Pandas Excel Tutorial: How to Read and Write Excel files</a></li><li class="recentcomments"><span class="comment-author-link"><a href="https://www.marsja.se" rel='external nofollow' class='url'>Erik Marsja</a></span> on <a href="https://www.marsja.se/three-ways-to-carry-out-2-way-anova-with-python/#comment-14946">Three ways to do a two-way ANOVA with Python</a></li><li class="recentcomments"><span class="comment-author-link"><a href="https://www.marsja.se" rel='external nofollow' class='url'>Erik Marsja</a></span> on <a href="https://www.marsja.se/repeated-measures-anova-in-python-using-statsmodels/#comment-14945">Repeated Measures ANOVA in Python using Statsmodels</a></li><li class="recentcomments"><span class="comment-author-link">Andrew Bourne</span> on <a href="https://www.marsja.se/repeated-measures-anova-in-python-using-statsmodels/#comment-14931">Repeated Measures ANOVA in Python using Statsmodels</a></li></ul></aside><aside id="archives-2" class="widget widget_archive"><h2 class="widgettitle">Archives</h2>
+<ul>
+<li><a href='https://www.marsja.se/2018/11/'>November 2018</a></li>
+<li><a href='https://www.marsja.se/2018/10/'>October 2018</a></li>
+<li><a href='https://www.marsja.se/2018/07/'>July 2018</a></li>
+<li><a href='https://www.marsja.se/2017/07/'>July 2017</a></li>
+<li><a href='https://www.marsja.se/2017/06/'>June 2017</a></li>
+<li><a href='https://www.marsja.se/2017/03/'>March 2017</a></li>
+<li><a href='https://www.marsja.se/2017/02/'>February 2017</a></li>
+<li><a href='https://www.marsja.se/2016/08/'>August 2016</a></li>
+<li><a href='https://www.marsja.se/2016/06/'>June 2016</a></li>
+<li><a href='https://www.marsja.se/2016/05/'>May 2016</a></li>
+<li><a href='https://www.marsja.se/2016/04/'>April 2016</a></li>
+<li><a href='https://www.marsja.se/2016/03/'>March 2016</a></li>
+<li><a href='https://www.marsja.se/2016/02/'>February 2016</a></li>
+<li><a href='https://www.marsja.se/2016/01/'>January 2016</a></li>
+<li><a href='https://www.marsja.se/2015/12/'>December 2015</a></li>
+<li><a href='https://www.marsja.se/2015/11/'>November 2015</a></li>
+<li><a href='https://www.marsja.se/2015/07/'>July 2015</a></li>
+<li><a href='https://www.marsja.se/2015/04/'>April 2015</a></li>
+<li><a href='https://www.marsja.se/2014/10/'>October 2014</a></li>
+</ul>
+</aside><aside id="categories-2" class="widget widget_categories"><h2 class="widgettitle">Categories</h2>
+<form action="https://www.marsja.se" method="get"><label class="screen-reader-text" for="cat">Categories</label><select name='cat' id='cat' class='postform'>
+<option value='-1'>Select Category</option>
+<option class="level-0" value="27">Books&nbsp;&nbsp;(2)</option>
+<option class="level-0" value="15">Experimental Design&nbsp;&nbsp;(4)</option>
+<option class="level-0" value="28">Fun&nbsp;&nbsp;(3)</option>
+<option class="level-0" value="65">Open Science&nbsp;&nbsp;(8)</option>
+<option class="level-0" value="66">Open Source&nbsp;&nbsp;(11)</option>
+<option class="level-0" value="3">Programming&nbsp;&nbsp;(39)</option>
+<option class="level-0" value="13">Psychology&nbsp;&nbsp;(19)</option>
+<option class="level-0" value="6">Psychopy&nbsp;&nbsp;(5)</option>
+<option class="level-0" value="5">Python&nbsp;&nbsp;(34)</option>
+<option class="level-0" value="60">Python in Research&nbsp;&nbsp;(3)</option>
+<option class="level-0" value="4">R&nbsp;&nbsp;(4)</option>
+<option class="level-0" value="61">Writing&nbsp;&nbsp;(1)</option>
+</select>
+</form>
+<script type='text/javascript'>
+/* <![CDATA[ */
+(function() {
+	var dropdown = document.getElementById( "cat" );
+	function onCatChange() {
+		if ( dropdown.options[ dropdown.selectedIndex ].value > 0 ) {
+			dropdown.parentNode.submit();
+		}
+	}
+	dropdown.onchange = onCatChange;
+})();
+/* ]]> */
+</script>
+</aside><aside id="meta-2" class="widget widget_meta"><h2 class="widgettitle">Meta</h2>
+<ul>
+<li><a rel="nofollow" href="https://www.marsja.se/erik/">Log in</a></li>
+<li><a href="https://www.marsja.se/feed/">Entries <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+<li><a href="https://www.marsja.se/comments/feed/">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+<li><a href="https://wordpress.org/" title="Powered by WordPress, state-of-the-art semantic personal publishing platform.">WordPress.org</a></li> </ul>
+</aside><aside id="twitter_timeline-2" class="widget widget_twitter_timeline"><h2 class="widgettitle">Follow me on Twitter</h2>
+<a class="twitter-timeline" data-height="400" data-theme="light" data-link-color="#f96e5b" data-border-color="#e8e8e8" data-tweet-limit="4" data-lang="EN" data-partner="jetpack" data-chrome="noheader nofooter noborders noscrollbar transparent" data-widget-id="675370815467204609" href="https://twitter.com/675370815467204609">My Tweets</a></aside>
+</div>
+</div>
+</div>
+<div style="display:none">
+</div>
+<script>
+    jQuery(document).ready(function () {
+		jQuery.post('https://www.marsja.se?ga_action=googleanalytics_get_script', {action: 'googleanalytics_get_script'}, function(response) {
+			var s = document.createElement("script");
+			s.type = "text/javascript";
+			s.innerHTML = response;
+			jQuery("head").append(s);
+		});
+    });
+</script>
+<script type="text/javascript">
+		window.WPCOM_sharing_counts = {"https:\/\/www.marsja.se\/pandas-sample-randomly-select-rows\/":2561};
+	</script>
+<div id="sharing_email" style="display: none;">
+<form action="/pandas-sample-randomly-select-rows/" method="post">
+<label for="target_email">Send to Email Address</label>
+<input type="email" name="target_email" id="target_email" value="" />
+<label for="source_name">Your Name</label>
+<input type="text" name="source_name" id="source_name" value="" />
+<label for="source_email">Your Email Address</label>
+<input type="email" name="source_email" id="source_email" value="" />
+<input type="text" id="jetpack-source_f_name" name="source_f_name" class="input" value="" size="25" autocomplete="off" title="This field is for validation and should not be changed" />
+<img style="float: right; display: none" class="loading" src="https://www.marsja.se/wp-content/plugins/jetpack/modules/sharedaddy/images/loading.gif" alt="loading" width="16" height="16" />
+<input type="submit" value="Send Email" class="sharing_send" />
+<a rel="nofollow" href="#cancel" class="sharing_cancel" role="button">Cancel</a>
+<div class="errors errors-1" style="display: none;">
+Post was not sent - check your email addresses! </div>
+<div class="errors errors-2" style="display: none;">
+Email check failed, please try again </div>
+<div class="errors errors-3" style="display: none;">
+Sorry, your blog cannot share posts by email. </div>
+</form>
+</div>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var wpcf7 = {"apiSettings":{"root":"https:\/\/www.marsja.se\/wp-json\/contact-form-7\/v1","namespace":"contact-form-7\/v1"},"recaptcha":{"messages":{"empty":"Please verify that you are not a robot."}},"cached":"1"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://www.marsja.se/wp-content/plugins/contact-form-7/includes/js/scripts.js?ver=5.0.5'></script>
+<script type='text/javascript' src='https://s0.wp.com/wp-content/js/devicepx-jetpack.js?ver=201847'></script>
+<script type='text/javascript' src='https://secure.gravatar.com/js/gprofiles.js?ver=2018Novaa'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var WPGroHo = {"my_hash":""};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://www.marsja.se/wp-content/plugins/jetpack/modules/wpgroho.js?ver=9492d9369baf94290752311abbf4aafc'></script>
+<script type='text/javascript' src='https://www.marsja.se/wp-content/themes/decode/scripts/decode.js?ver=3.0.9'></script>
+<script type='text/javascript' src='https://www.marsja.se/wp-includes/js/comment-reply.min.js?ver=9492d9369baf94290752311abbf4aafc'></script>
+<script type='text/javascript' src='https://www.marsja.se/wp-content/plugins/jetpack/_inc/build/twitter-timeline.min.js?ver=4.0.0'></script>
+<script type='text/javascript' src='https://www.marsja.se/wp-includes/js/wp-embed.min.js?ver=9492d9369baf94290752311abbf4aafc'></script>
+<script type='text/javascript' src='https://www.marsja.se/wp-content/plugins/jetpack/_inc/build/postmessage.min.js?ver=6.7'></script>
+<script type='text/javascript' src='https://www.marsja.se/wp-content/plugins/jetpack/_inc/build/jquery.jetpack-resize.min.js?ver=6.7'></script>
+<script type='text/javascript' src='https://www.marsja.se/wp-content/plugins/jetpack/_inc/build/likes/queuehandler.min.js?ver=6.7'></script>
+<script type='text/javascript' src='https://www.marsja.se/wp-content/plugins/easy-table-of-contents/vendor/smooth-scroll/jquery.smooth-scroll.min.js?ver=1.5.5'></script>
+<script type='text/javascript' src='https://www.marsja.se/wp-content/plugins/easy-table-of-contents/vendor/js-cookie/js.cookie.min.js?ver=2.0.3'></script>
+<script type='text/javascript' src='https://www.marsja.se/wp-content/plugins/easy-table-of-contents/vendor/sticky-kit/jquery.sticky-kit.min.js?ver=1.9.2'></script>
+<script type='text/javascript' src='https://www.marsja.se/wp-content/plugins/easy-table-of-contents/vendor/waypoints/jquery.waypoints.min.js?ver=1.9.2'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var ezTOC = {"smooth_scroll":"1","visibility_hide_by_default":"","width":"auto","scroll_offset":"30"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://www.marsja.se/wp-content/plugins/easy-table-of-contents/assets/js/front.min.js?ver=1.7'></script>
+<script async="async" type='text/javascript' src='https://www.marsja.se/wp-content/plugins/akismet/_inc/form.js?ver=4.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var sharing_js_options = {"lang":"en","counts":"1","is_stats_active":"1"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://www.marsja.se/wp-content/plugins/jetpack/_inc/build/sharedaddy/sharing.min.js?ver=6.7'></script>
+<script type='text/javascript'>
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-twitter', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomtwitter', 'menubar=1,resizable=1,width=600,height=350' );
+				return false;
+			});
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-tumblr', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomtumblr', 'menubar=1,resizable=1,width=450,height=450' );
+				return false;
+			});
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-linkedin', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomlinkedin', 'menubar=1,resizable=1,width=580,height=450' );
+				return false;
+			});
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-facebook', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomfacebook', 'menubar=1,resizable=1,width=600,height=400' );
+				return false;
+			});
+</script>
+<script type='text/javascript' data-cfasync="false" async="async" defer="defer" src='https://www.google.com/recaptcha/api.js?render=explicit&#038;ver=1.37'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var gglcptch = {"options":{"version":"v2","sitekey":"6LdoFnsUAAAAADqvAMcAZ4fUfpS9R-kDoTztEeEK","theme":"light","error":"<strong>Warning<\/strong>:&nbsp;More than one reCAPTCHA has been found in the current form. Please remove all unnecessary reCAPTCHA fields to make it work properly."},"vars":{"visibility":false}};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://www.marsja.se/wp-content/plugins/google-captcha/js/script.js?ver=1.37'></script>
+<iframe src='https://widgets.wp.com/likes/master.html?ver=201847#ver=201847' scrolling='no' id='likes-master' name='likes-master' style='display:none;'></iframe>
+<div id='likes-other-gravatars'><div class="likes-text"><span>%d</span> bloggers like this:</div><ul class="wpl-avatars sd-like-gravatars"></ul></div>
+<script type='text/javascript' src='https://stats.wp.com/e-201847.js' async='async' defer='defer'></script>
+<script type='text/javascript'>
+	_stq = window._stq || [];
+	_stq.push([ 'view', {v:'ext',j:'1:6.7',blog:'76663462',post:'2561',tz:'1',srv:'www.marsja.se'} ]);
+	_stq.push([ 'clickTrackerInit', '76663462', '2561' ]);
+</script>
+</body>
+</html>
+
+
