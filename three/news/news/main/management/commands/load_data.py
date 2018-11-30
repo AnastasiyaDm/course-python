@@ -5,22 +5,22 @@ from bs4 import BeautifulSoup
 url='https://pythondigest.ru/'
 r=requests.get(url)
 soup = BeautifulSoup(r.text,"html.parser")
-
 class Command(BaseCommand):
     
 
     def handle(self,*arguments,**options):
         print 'START'
         i=1
+        News.objects.all().delete()
         block=soup.find_all('div',{'class':'item-container'})
         for l in block:
             record=News()
-            record.title='Title %s' % i
             findText=l.findNext('div',{'class':'issue-item'}).find_all('p')
             a=''
             for m in findText:
-                a+=m.text
+                a=a+m.text
             record.content=a    
+            record.title=l.find('a',{'class':'issue-item-title'}).text
             record.urls=l.find('a',{'class':'issue-item-title'}).get('href','http')
             record.save()
             print 'Saving %s' % i
